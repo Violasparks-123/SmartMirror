@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="theme-color" content="#000000">
+<title>Smart Mirror</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="css/mirror.css">
+
+</head>
+<body>
+<div id="mirror" class="mirror" data-theme-name="dream">
+  <div id="ledFrame" class="led-frame" aria-hidden="true"></div>
+
+  <!-- ===== HOME ===== -->
+  <section class="screen active" id="screen-home" aria-label="Home">
+    <div class="clock-block">
+      <div class="clock" id="clock">--:--</div>
+      <div class="date" id="date"></div>
+      <div class="greet" id="greet"></div>
+      <div class="event-line" id="eventLine"></div>
+    </div>
+    <div class="card weather-mini" id="weatherMini">
+      <div class="wicon" id="wMiniIcon"></div>
+      <div>
+        <div class="wtemp" id="wMiniTemp">--°</div>
+        <div class="wdesc" id="wMiniDesc">Loading weather…</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Today</div>
+      <div class="next-line" id="nextLine"></div>
+      <div class="tt" id="todayList"></div>
+    </div>
+    <div class="card msg-card" id="msgCard" hidden>
+      <div class="card-title">Messages</div>
+      <div id="msgList" class="rem-list"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Reminders</div>
+      <div id="reminderList" class="rem-list"></div>
+    </div>
+  </section>
+
+  <!-- ===== ASSISTANT ===== -->
+  <section class="screen" id="screen-assistant" aria-label="Assistant">
+    <div class="orb-wrap"><div class="orb" id="orb"></div></div>
+    <div class="orb-label" id="orbLabel">Say "Hey Mirror"</div>
+    <div class="chat" id="chat" aria-live="polite"></div>
+  </section>
+
+  <!-- ===== MUSIC ===== -->
+  <section class="screen" id="screen-music" aria-label="Music">
+    <div class="album" id="album"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+    <div class="song" id="songTitle">No songs yet</div>
+    <div class="artist" id="songSub">Add songs in Settings</div>
+    <div class="progress"><div class="progress-fill" id="songProgress"></div></div>
+    <div class="music-ctrl">
+      <button class="icon-btn" id="mPrev" aria-label="Previous song"><svg viewBox="0 0 24 24"><path d="M19 20 9 12l10-8v16zM5 19V5"/></svg></button>
+      <button class="icon-btn big" id="mPlay" aria-label="Play or pause"><svg viewBox="0 0 24 24" id="mPlayIcon"><path d="M7 4v16l13-8z"/></svg></button>
+      <button class="icon-btn" id="mNext" aria-label="Next song"><svg viewBox="0 0 24 24"><path d="m5 4 10 8-10 8V4zM19 5v14"/></svg></button>
+    </div>
+    <canvas id="viz" class="viz" width="600" height="120"></canvas>
+    <audio id="audio" preload="auto"></audio>
+  </section>
+
+  <!-- ===== SCHEDULE ===== -->
+  <section class="screen" id="screen-schedule" aria-label="Schedule">
+    <div class="sched-head" id="schedTodayHead">Today</div>
+    <div class="tt big" id="schedToday"></div>
+    <div class="divider"></div>
+    <div class="sched-head" id="schedTomHead">Tomorrow</div>
+    <div class="tt big" id="schedTomorrow"></div>
+    <div class="sample-note" id="ttSampleNote">No timetable yet · add yours in Settings</div>
+  </section>
+
+  <!-- ===== WEATHER ===== -->
+  <section class="screen" id="screen-weather" aria-label="Weather">
+    <div class="wbig-icon" id="wBigIcon"></div>
+    <div class="wbig-temp" id="wBigTemp">--°</div>
+    <div class="wbig-desc" id="wBigDesc"></div>
+    <div class="wbig-extra" id="wBigExtra"></div>
+    <div class="hours" id="wHours"></div>
+    <div class="sample-note" id="wSampleNote"></div>
+  </section>
+
+  <!-- ===== RECIPE ===== -->
+  <section class="screen" id="screen-recipe" aria-label="Recipe">
+    <div class="rec-head">
+      <img id="recImg" class="rec-img" alt="" hidden>
+      <div class="rec-title" id="recTitle">Recipes</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Ingredients</div>
+      <ul class="rec-ing" id="recIng"></ul>
+    </div>
+    <div class="rec-step-no" id="recStepNo"></div>
+    <div class="rec-step" id="recStep">Say "recipe for pasta" or "what can I make with eggs".</div>
+    <div class="sample-note" id="recNote"></div>
+  </section>
+
+  <!-- ===== VIDEO SHELF ===== -->
+  <section class="screen" id="screen-videos" aria-label="Videos">
+    <div class="rec-title" id="shelfTitle">Videos</div>
+    <div class="shelf" id="shelf"></div>
+    <div class="sample-note" id="shelfNote">Spot 2: tap = next, hold = play. Or say "play number 2".</div>
+  </section>
+
+  <!-- ===== VIDEO ===== -->
+  <section class="screen" id="screen-video" aria-label="Video">
+    <div class="rec-title" id="videoTitle">Video</div>
+    <div class="video-box" id="videoBox"></div>
+    <div class="sample-note" id="videoNote">Spot 2: tap = pause or play, double-tap = back to the videos.</div>
+  </section>
+
+  <!-- ===== SETTINGS ===== -->
+  <section class="screen" id="screen-settings" aria-label="Settings">
+    <div class="settings">
+      <h2>Settings</h2>
+
+      <div class="set-group">
+        <h3>Look</h3>
+        <div class="theme-grid" id="themeGrid"></div>
+        <label class="row"><input type="checkbox" id="setMirrorMode"> Mirror mode (pure black, for behind the film)</label>
+        <label class="row"><input type="checkbox" id="setLedPreview"> Show the light strip on screen too</label>
+      </div>
+
+      <div class="set-group">
+        <h3>You</h3>
+        <label class="field">Your name <input id="setName" type="text" placeholder="e.g. Sam"></label>
+        <label class="field">City (for weather) <input id="setCity" type="text"></label>
+        <button class="btn" id="setCityBtn">Update city</button>
+        <span class="small" id="cityStatus"></span>
+      </div>
+
+      <div class="set-group">
+        <h3>Voice</h3>
+        <label class="field">Mirror's voice <select id="setVoice"></select></label>
+        <button class="btn" id="voiceTest">Test voice</button>
+        <label class="row"><input type="checkbox" id="setWake"> Always listen for "Hey Mirror"</label>
+      </div>
+
+      <div class="set-group">
+        <h3>Timetable</h3>
+        <p class="small">One class per line, like <span class="mono">10:30-12:30 Maths</span> (24-hour time, so 6 pm is 18:00).</p>
+        <div class="tt-editor" id="ttEditor"></div>
+        <button class="btn" id="ttSave">Save timetable</button>
+        <span class="small" id="ttStatus"></span>
+      </div>
+
+      <div class="set-group">
+        <h3>Music</h3>
+        <label class="field">Add songs (MP3s) <input id="songFiles" type="file" accept="audio/*" multiple></label>
+        <p class="small" id="songCount"></p>
+      </div>
+
+      <div class="set-group">
+        <h3>Videos</h3>
+        <p class="small">One per line: <span class="mono">Title | YouTube link</span></p>
+        <div class="tt-editor"><label>Saved videos<textarea id="videoList"></textarea></label></div>
+        <button class="btn" id="videoSave">Save videos</button>
+        <label class="field">Or add video files <input id="videoFiles" type="file" accept="video/*" multiple></label>
+        <span class="small" id="videoStatus"></span>
+        <label class="field">YouTube key (optional, lets the mirror search YouTube) <input id="setYtKey" type="password" autocomplete="off" placeholder="Paste the key a parent made"></label>
+        <button class="btn" id="ytKeySave">Save key</button>
+        <span class="small" id="ytKeyStatus"></span>
+      </div>
+
+      <div class="set-group">
+        <h3>Family (Mirror Home)</h3>
+        <label class="field">Family members, separated by commas <input id="setFamily" type="text" placeholder="Mom, Dad"></label>
+        <button class="btn" id="familySave">Save family</button>
+        <p class="small">Mirror Home on their phones uses the same pairing code as below. Before sending real family messages, switch to a private messenger (ask Claude).</p>
+      </div>
+
+      <div class="set-group">
+        <h3>Connections</h3>
+        <label class="field">Pairing code (same on the ESP32 and remote) <input id="setPair" type="text" maxlength="12"></label>
+        <button class="btn" id="pairSave">Save code</button>
+        <p class="small">Private messenger (EMQX). Leave empty to use the free public one. Saved only on this iPad, never in the code.</p>
+        <label class="field">Messenger address <input id="setMqttHost" type="text" autocomplete="off" placeholder="e.g. abc123.ala.eu-central-1.emqxsl.com"></label>
+        <label class="field">Username <input id="setMqttUser" type="text" autocomplete="off"></label>
+        <label class="field">Password <input id="setMqttPass" type="password" autocomplete="off"></label>
+        <button class="btn" id="mqttSave">Save messenger</button>
+        <span class="small" id="mqttStatus"></span>
+        <label class="row"><input type="checkbox" id="setGestures"> Hand gestures (uses the front camera)</label>
+        <div class="status-list" id="statusList"></div>
+      </div>
+
+      <div class="set-group">
+        <h3>Help</h3>
+        <p class="small">Say "Hey Mirror, what can you do?" or tap AI and ask. Touch spots: tap, double-tap or hold.</p>
+        <button class="btn" id="setClose">Back to home</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECRET ===== -->
+  <section class="screen secret" id="screen-secret" aria-label="Hidden mode">
+    <div class="access">ACCESS GRANTED</div>
+    <div class="term" id="term">
+      <div>&gt; mini games: say "rock paper scissors" or "flip a coin"</div>
+      <div>&gt; visualisers: say "party mode"</div>
+      <div>&gt; personality: say "be dramatic" or "be normal"</div>
+      <div>&gt; diagnostics: say "run diagnostics"</div>
+      <div>&gt; say "exit secret mode" to leave_</div>
+    </div>
+  </section>
+
+  <!-- ===== Floating bits ===== -->
+  <div class="toast" id="toast" aria-live="polite"></div>
+  <div class="timer-chip" id="timerChip" hidden></div>
+  <div class="listen-chip" id="listenChip" hidden><span class="dot"></span><span id="listenText">Listening…</span></div>
+
+  <form class="typebar" id="typebar" hidden>
+    <label class="sr" for="typeInput">Type a command</label>
+    <input id="typeInput" type="text" autocomplete="off" placeholder="Type a command, e.g. lights pink">
+    <button class="btn" type="submit">Send</button>
+  </form>
+
+  <!-- Touch spots: on the real mirror these are hidden sensors; here they're tappable -->
+  <nav class="spots" aria-label="Touch spots">
+    <button class="spot" data-spot="1"><span class="spot-dot"></span><span>AI</span></button>
+    <button class="spot" data-spot="2"><span class="spot-dot"></span><span>Music</span></button>
+    <button class="spot" data-spot="3"><span class="spot-dot"></span><span>Screens</span></button>
+    <button class="spot" data-spot="4"><span class="spot-dot"></span><span>Lights</span></button>
+    <button class="spot mini" id="kbdBtn" aria-label="Type a command"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg></button>
+    <button class="spot mini" id="gearBtn" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></button>
+  </nav>
+  <div class="ai-tag">AI assistant</div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/weather.js"></script>
+<script src="js/schedule.js"></script>
+<script src="js/speech.js"></script>
+<script src="js/lights.js"></script>
+<script src="js/music.js"></script>
+<script src="js/content.js"></script>
+<script src="js/commands.js"></script>
+<script src="js/family.js"></script>
+<script src="js/recipes.js"></script>
+<script src="js/video.js"></script>
+<script src="js/outfit.js"></script>
+<script src="js/extras.js"></script>
+<script src="js/gestures.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

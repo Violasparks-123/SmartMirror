@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#6d3fd9">
+<title>Mirror Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="css/home.css">
+
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div>
+      <h1>Mirror Home</h1>
+      <div class="who" id="whoLine">Not set up yet</div>
+    </div>
+    <div class="conn" id="conn"><span class="dot"></span><span id="connText">Offline</span></div>
+  </header>
+
+  <div class="banner" id="banner" hidden></div>
+
+  <!-- Setup -->
+  <section class="panel" id="setup">
+    <h2>Connect to your mirror</h2>
+    <p class="muted">Enter the pairing code shown in the mirror's Settings, then pick who you are.</p>
+    <label class="field" for="pairInput">Pairing code</label>
+    <input id="pairInput" type="text" maxlength="12" autocomplete="off" placeholder="e.g. K7Q2MP">
+    <label class="field" for="nameInput">Who are you?</label>
+    <input id="nameInput" type="text" list="memberList" maxlength="20" placeholder="Mom">
+    <datalist id="memberList"><option value="Mom"><option value="Dad"></datalist>
+    <details class="adv" id="privBox">
+      <summary>Private messenger (optional)</summary>
+      <p class="muted small">Only if the mirror uses one. Copy the same details from the mirror's Settings → Connections.</p>
+      <label class="field" for="hostInput">Messenger address</label>
+      <input id="hostInput" type="text" autocomplete="off" placeholder="e.g. abc123.ala.eu-central-1.emqxsl.com">
+      <label class="field" for="userInput">Username</label>
+      <input id="userInput" type="text" autocomplete="off">
+      <label class="field" for="passInput">Password</label>
+      <input id="passInput" type="password" autocomplete="off">
+    </details>
+    <button class="btn primary" id="setupSave">Connect</button>
+    <p class="muted small" id="privNote">Messages travel through a free public messenger. Until a private one is set up, don't send anything secret.</p>
+  </section>
+
+  <!-- Main -->
+  <main id="main" hidden>
+    <nav class="tabs" role="tablist">
+      <button role="tab" class="tab on" data-tab="messages" aria-selected="true">Messages <span class="badge" id="msgBadge" hidden></span></button>
+      <button role="tab" class="tab" data-tab="shopping" aria-selected="false">Shopping</button>
+      <button role="tab" class="tab" data-tab="videos" aria-selected="false">Videos</button>
+      <button role="tab" class="tab" data-tab="remote" aria-selected="false">Remote</button>
+    </nav>
+
+    <section class="tabpanel" id="tab-messages">
+      <div class="thread" id="thread" aria-live="polite"></div>
+      <form class="compose" id="composeForm">
+        <label class="sr" for="composeInput">Message to the mirror</label>
+        <input id="composeInput" type="text" maxlength="300" placeholder="Message the mirror…" autocomplete="off">
+        <button class="btn primary" type="submit">Send</button>
+      </form>
+      <button class="btn ghost small-btn" id="notifyBtn">Turn on alerts</button>
+    </section>
+
+    <section class="tabpanel" id="tab-shopping" hidden>
+      <form class="compose" id="shopForm">
+        <label class="sr" for="shopInput">Add an item</label>
+        <input id="shopInput" type="text" maxlength="60" placeholder="Add an item, e.g. milk" autocomplete="off">
+        <button class="btn primary" type="submit">Add</button>
+      </form>
+      <ul class="shop" id="shopList"></ul>
+      <button class="btn ghost" id="clearDone">Remove ticked items</button>
+    </section>
+
+    <section class="tabpanel" id="tab-videos" hidden>
+      <div class="panel add-video">
+        <h3>Add a video or song</h3>
+        <p class="muted small">In the YouTube app tap Share, then Copy link. Then tap the button below.</p>
+        <button class="btn primary" id="pasteBtn">Paste from YouTube</button>
+        <input id="vidUrl" type="url" placeholder="…or paste the link here" autocomplete="off">
+        <input id="vidTitle" type="text" maxlength="80" placeholder="Name it, e.g. Believer" autocomplete="off">
+        <button class="btn" id="vidPlay">Play now</button>
+        <div class="row">
+          <button class="btn primary" id="vidSave">Save as video</button>
+          <button class="btn primary" id="songSave">Save as song</button>
+        </div>
+      </div>
+      <form class="compose" id="searchForm" hidden>
+        <label class="sr" for="searchInput">Search YouTube</label>
+        <input id="searchInput" type="text" maxlength="80" placeholder="Search YouTube…" autocomplete="off">
+        <button class="btn primary" type="submit">Search</button>
+      </form>
+      <div id="resultsBox" hidden>
+        <h3 id="resultsHead">Results</h3>
+        <div class="vgrid" id="resultsGrid"></div>
+      </div>
+      <h3>Songs on the mirror</h3>
+      <div class="vgrid" id="songGrid"></div>
+      <h3>Videos on the mirror</h3>
+      <div class="vgrid" id="savedGrid"></div>
+    </section>
+
+    <section class="tabpanel" id="tab-remote" hidden>
+      <h3>Show on mirror</h3>
+      <div class="chips" id="screenChips"></div>
+      <h3>Lights</h3>
+      <div class="swatches" id="swatches"></div>
+      <div class="chips" id="modeChips"></div>
+      <label class="field" for="bright">Brightness</label>
+      <input type="range" id="bright" min="5" max="100" step="5" value="60">
+      <h3>Type a command</h3>
+      <form class="compose" id="cmdForm">
+        <label class="sr" for="cmdInput">Command</label>
+        <input id="cmdInput" type="text" placeholder="e.g. tell me a joke" autocomplete="off">
+        <button class="btn primary" type="submit">Send</button>
+      </form>
+    </section>
+
+    <button class="btn ghost settings-btn" id="resetSetup">Change code or name</button>
+  </main>
+</div>
+
+<script src="js/home.js"></script>
+
+</body>
+</html>

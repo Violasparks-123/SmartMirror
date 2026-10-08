@@ -1,0 +1,2 @@
+Put MP3 songs in this folder, then list them in js/config.js under songs, e.g.
+songs: ['music/my-song.mp3']
