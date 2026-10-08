@@ -109,6 +109,8 @@
     $('videoList').value = (S.videos || []).map(function (v) { return v.title + ' | ' + v.url; }).join('\n');
     $('setFamily').value = (S.family && S.family.members || []).join(', ');
     $('setYtKey').value = S.youtubeKey || '';
+    var ai = S.ai || {}; $('setAiProvider').value = ai.provider || 'openai'; $('setAiKey').value = ai.key || ''; $('setAiModel').value = ai.model || '';
+    $('setAiModel').placeholder = (ai.provider === 'anthropic') ? 'claude-haiku-4-5-20251001' : 'gpt-4o-mini';
     var mq = S.mqtt || {};
     $('setMqttHost').value = mq.host || ''; $('setMqttUser').value = mq.user || ''; $('setMqttPass').value = mq.pass || '';
     $('songCount').textContent = M.playlist.length ? M.playlist.length + ' song(s) ready' : 'No songs yet. Add a few MP3s.';
@@ -166,6 +168,18 @@
     $('ytKeySave').onclick = function () {
       S.youtubeKey = $('setYtKey').value.trim(); M.save(); if (M.shareVideos) M.shareVideos();
       $('ytKeyStatus').textContent = S.youtubeKey ? 'Saved. Try "search YouTube for cats".' : 'Key removed.';
+    };
+    $('setAiProvider').onchange = function (e) { $('setAiModel').placeholder = e.target.value === 'anthropic' ? 'claude-haiku-4-5-20251001' : 'gpt-4o-mini'; };
+    $('aiSave').onclick = function () {
+      S.ai = { provider: $('setAiProvider').value, key: $('setAiKey').value.trim(), model: $('setAiModel').value.trim() }; M.save();
+      $('aiStatus').textContent = S.ai.key ? 'Saved. Tap Test AI to check it works.' : 'AI key removed. Built-in commands still work.';
+    };
+    $('aiTest').onclick = function () {
+      if (!M.aiReady()) { $('aiStatus').textContent = 'Save a key first.'; return; }
+      $('aiStatus').textContent = 'Testing…';
+      M.aiChat('Reply with exactly: AI is working!', [{ role: 'user', content: 'Test' }])
+        .then(function (t) { $('aiStatus').textContent = '✓ ' + (t || 'It answered.'); })
+        .catch(function (e) { $('aiStatus').textContent = M.aiProblem(e) + ' (' + e.message + ')'; });
     };
     $('mqttSave').onclick = function () {
       var host = $('setMqttHost').value.trim(), user = $('setMqttUser').value.trim(), pass = $('setMqttPass').value;

@@ -172,6 +172,18 @@
       </div>
 
       <div class="set-group">
+        <h3>AI (optional)</h3>
+        <p class="small">A parent pastes their OpenAI or Anthropic key here. It's saved only on this device, never in the code. Set a monthly spending limit on the account first.</p>
+        <label class="field">AI company <select id="setAiProvider"><option value="openai">OpenAI (ChatGPT)</option><option value="anthropic">Anthropic (Claude)</option></select></label>
+        <label class="field">AI key <input id="setAiKey" type="password" autocomplete="off" placeholder="Paste the key"></label>
+        <label class="field">Model (leave empty for the default) <input id="setAiModel" type="text" autocomplete="off" placeholder="gpt-4o-mini"></label>
+        <button class="btn" id="aiSave">Save AI</button>
+        <button class="btn" id="aiTest">Test AI</button>
+        <span class="small" id="aiStatus"></span>
+        <p class="small">Characters: say "who can I talk to?" or "talk to Pomni". Say "bye" to stop.</p>
+      </div>
+
+      <div class="set-group">
         <h3>Family (Mirror Home)</h3>
         <label class="field">Family members, separated by commas <input id="setFamily" type="text" placeholder="Mom, Dad"></label>
         <button class="btn" id="familySave">Save family</button>
@@ -249,6 +261,8 @@
 <script src="js/family.js"></script>
 <script src="js/recipes.js"></script>
 <script src="js/video.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/characters.js"></script>
 <script src="js/outfit.js"></script>
 <script src="js/extras.js"></script>
 <script src="js/gestures.js"></script>

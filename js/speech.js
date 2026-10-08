@@ -26,6 +26,7 @@
       var v = pickVoice(); if (v) u.voice = v;
       u.rate = M.settings.personality === 'dramatic' ? 0.9 : 1.02;
       u.pitch = M.settings.personality === 'dramatic' ? 1.15 : 1;
+      if (M.voiceTweak) { u.rate = M.voiceTweak.rate; u.pitch = M.voiceTweak.pitch; }   // a character is talking
       var paused = (mode !== 'idle');
       if (paused) stopRec();            // don't let the mirror hear itself
       u.onend = u.onerror = function () { if (done) done(); if (wantWake) setTimeout(M.startWake, 300); };

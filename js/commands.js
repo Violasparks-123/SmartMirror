@@ -15,7 +15,7 @@
     if (M.settings.personality === 'dramatic' && !opts.plain) text = pick(drama) + ' ' + text;
     M.bubble('bot', text);
     if (M.current !== 'assistant' && !opts.noToast) M.toast(text, Math.min(9000, 2500 + text.length * 45));
-    M.orb('', 'Tap AI or say "Hey Mirror"');
+    M.orb('', M.characterLabel ? M.characterLabel() : 'Tap AI or say "Hey Mirror"');
     if (!opts.silent) M.speak(text);
     return text;
   };
@@ -452,6 +452,8 @@
         return M.say(pick(['Ha! Good one.', 'I did not see that coming. Nice.', 'That was terrible. I love it.']));
       }
     }
+    // Chatting with a character? They answer everything except normal mirror commands
+    if (!opts.fromAI && M.characterRoute) { var ch = M.characterRoute(raw, t); if (ch !== false) return ch; }
     var ALL = FIRST.concat(R);
     for (var i = 0; i < ALL.length; i++) {
       var pats = ALL[i][0];
@@ -469,8 +471,9 @@
 
   /* ---------- Real AI (only once a middle-man server is set up) ---------- */
   M.askAI = function (raw, t) {
+    if (M.aiReady && M.aiReady()) return M.aiAnswer(raw);   // AI key saved in Settings → AI
     if (!M.config.aiEndpoint) {
-      return M.say(pick(['I don\'t know that one yet. Once my AI is set up, I\'ll be able to answer anything. Say "what can you do" for ideas.', 'Hmm, that\'s not one of my built-in commands yet. Try "help" to see what I can do.']));
+      return M.say(pick(['I don\'t know that one yet. Once a parent adds the AI key in Settings, I\'ll be able to answer anything. Say "what can you do" for ideas.', 'Hmm, that\'s not one of my built-in commands yet. Try "help" to see what I can do.']));
     }
     M.show('assistant'); M.orb('thinking', 'Thinking…');
     var context = { time: new Date().toString(), name: M.settings.name, summary: summary(), today: M.classesOn(new Date().getDay()), reminders: M.settings.reminders, weather: M.weather && { temp: M.weather.temp, text: M.wmo(M.weather.code).text } };
