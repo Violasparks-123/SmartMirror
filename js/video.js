@@ -160,19 +160,48 @@
   }
   function unescape(s) { return s.replace(/&#39;/g, '\'').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>'); }
   function searchYouTube(q, max) {
-    var url = 'https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=' + (max || 6) + '&safeSearch=strict&videoEmbeddable=true&q=' + encodeURIComponent(q) + '&key=' + ytKey();
-    return fetch(url).then(function (r) { return r.json(); }).then(function (j) {
-      return (j.items || []).map(function (it) { return { title: unescape(it.snippet.title), url: 'https://youtu.be/' + it.id.videoId }; });
+    // Try "strict" safe search first; if that hides everything, try YouTube's normal ("moderate") safe search.
+    // Last try: drop the "can play inside other sites" filter, which sometimes hides everything.
+    return searchOnce(q, max, 'strict', true).then(function (list) {
+      return list.length ? list : searchOnce(q, max, 'moderate', true);
+    }).then(function (list) {
+      return list.length ? list : searchOnce(q, max, 'moderate', false);
     });
+  }
+  function searchOnce(q, max, safe, embeddable) {
+    var url = 'https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=' + (max || 6) + '&safeSearch=' + safe + (embeddable ? '&videoEmbeddable=true' : '') + '&q=' + encodeURIComponent(q) + '&key=' + encodeURIComponent(ytKey().trim());
+    return fetch(url).then(function (r) { return r.json(); }).then(function (j) {
+      if (j.error) { var e = new Error(j.error.message || 'error'); e.google = j.error; throw e; }
+      return (j.items || []).filter(function (it) { return it.id && it.id.videoId; })
+        .map(function (it) { return { title: unescape(it.snippet.title), url: 'https://youtu.be/' + it.id.videoId }; });
+    });
+  }
+  // Turns Google's error into plain words (shown on the shelf so it's easy to fix)
+  function ytProblem(e) {
+    var g = e && e.google, msg = ((g && g.message) || (e && e.message) || '').toLowerCase();
+    var reason = ((g && g.errors && g.errors[0] && g.errors[0].reason) || '') + ' ' + ((g && g.details && g.details[0] && g.details[0].reason) || '');
+    reason = reason.toLowerCase();
+    if (/referer|referrer/.test(msg + reason)) return 'The YouTube key is locked to a different website. In Google Cloud → Credentials → your key → Website restrictions, add https://' + location.host + '/* and save. It can take 5 minutes to work.';
+    if (/not valid|invalid|keyinvalid/.test(msg + reason)) return 'The YouTube key isn\'t right. Copy it again from Google Cloud and paste it into Settings → Videos.';
+    if (/not been used|disabled|accessnotconfigured|service_disabled/.test(msg + reason)) return 'YouTube Data API v3 isn\'t switched on for this key\'s project. Enable it in Google Cloud, then wait 5 minutes.';
+    if (/blocked|api_key_service_blocked/.test(msg + reason)) return 'The key isn\'t allowed to use YouTube. In Google Cloud → Credentials → your key → API restrictions, tick YouTube Data API v3.';
+    if (/quota/.test(msg + reason)) return 'Today\'s free YouTube searches are used up. It resets tomorrow.';
+    if (!g) return 'Couldn\'t reach YouTube. Check the internet connection.';
+    return 'YouTube said: ' + (g.message || 'an error');
   }
   M.searchVideos = function (q) {
     if (!ytKey()) return M.say('Searching YouTube needs a YouTube key from a parent first. For now, add videos from Mirror Home.');
     M.$('shelfTitle').textContent = 'Searching for "' + q + '"…'; M.$('shelf').innerHTML = ''; M.show('videos');
     searchYouTube(q, 6).then(function (list) {
-      if (!list.length) return M.say('I couldn\'t find videos for ' + q + '.');
+      if (!list.length) { M.$('shelfTitle').textContent = 'No videos found for "' + q + '" (searched 3 ways)'; return M.say('I searched three different ways but found no videos for ' + q + '.'); }
       results = list; resultsFor = q; sel = 0; M.renderShelf(); M.shareVideos();
       M.say('Here are ' + list.length + ' videos. Say "play number 1", or use Spot 2.', { silent: true });
-    }).catch(function () { M.say('YouTube search isn\'t working right now.'); });
+    }).catch(function (e) {
+      var why = ytProblem(e);
+      M.$('shelfTitle').textContent = 'YouTube search didn\'t work';
+      M.$('shelf').innerHTML = '<div class="sample-note"></div>'; M.$('shelf').firstChild.textContent = why;
+      M.say(why.split('. ')[0] + '.');
+    });
     return true;
   };
   function numFrom(s) { var n = M.num(s.replace(/^(number|no\.?) /, '').replace(/^(the )?(first|second|third|fourth|fifth|sixth|seventh|eighth)( one)?$/, function (a, b, w) { return { first: 1, second: 2, third: 3, fourth: 4, fifth: 5, sixth: 6, seventh: 7, eighth: 8 }[w]; })); return n; }
