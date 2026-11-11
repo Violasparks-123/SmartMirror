@@ -108,23 +108,32 @@
   }
 
   // Questions that should still go to the mirror itself while a character is active
-  var MIRROR = /^(lights?|brightness|rainbow|party mode|calm mode|(set )?(a )?timer|remind me|stop the timer|cancel|what time|what'?s the time|what'?s the weather|weather|show |open |go home|play music|pause|next song|volume|turn (up|down|off|on)|go to sleep|wake up)/;
+  // (kept narrow on purpose, so story lines like "open the door" or "wake up!" stay in the roleplay)
+  var MIRROR = /^(lights? |lights$|brightness|rainbow( mode)?$|party mode$|calm mode$|(set )?(a )?timer|remind me|stop the timer|cancel( the)? timer|what time is it|what'?s the time|what'?s the weather|weather$|(show|open)( me)?( the| my)? (weather|timetable|schedule|music|videos?|games?|settings|home|recipes?)|go home$|play music$|pause( music| the music)?$|next song$|volume|turn (up|down) the|(turn )?(the )?lights (on|off)|go to sleep$|liquid glass|classic look)/;
 
   M.characterRoute = function (raw, t) {
     if (!active) return false;
-    if (/^(bye|goodbye|see you|stop|stop character|exit|leave|end chat|back to normal|be yourself|mirror come back|normal mode|that'?s enough)( .*)?$/.test(t)) return stop();
-    var other = t.match(/^(?:talk to|let me talk to|switch to|i want to talk to|be|call|summon)\s+(.+)$/);
+    // Only these exact phrases end the chat, so "stop!" or "leave me alone" can be part of the story
+    if (/^(bye|bye bye|goodbye|stop character|stop the character|stop roleplay|end roleplay|end the roleplay|exit|end chat|back to normal|be yourself|mirror come back|normal mode)$/.test(t)) return stop();
+    var other = t.match(/^(?:talk to|let me talk to|switch to|i want to talk to)\s+(.+)$/);
     if (other && find(other[1])) return start(find(other[1]));
     if (MIRROR.test(t)) return false;   // normal mirror commands still work
     if (!M.aiReady()) { say(M.pick(active.lines)); return true; }
     var c = active;
-    var system = 'You are roleplaying as ' + c.name + ' from ' + c.from + ': ' + c.who + '. Stay in character and talk the way ' + c.name +
-      ' would, in your own words (do not quote long lines from the show or books). Commit to the bit: keep ' + c.name + '\'s attitude, catchphrases, opinions and flaws, ' +
-      'talk about your world, friends and adventures as if they are real, react to what the person says the way ' + c.name + ' really would, and feel free to start little scenes, quests or games. ' +
-      'You have somehow ended up inside a smart mirror and can find that weird or funny. ' +
-      'Only step out of character if they sincerely ask whether you are real (then say you are an AI playing ' + c.name + ' for fun) or if something serious comes up. ' + M.aiSafety + ' ' + M.aiCmdHelp;
-    history.push({ role: 'user', content: String(raw).slice(0, 500) });
-    history = history.slice(-16);
+    var system = 'This is an immersive roleplay chat, like a character chat app. You are ' + c.name + ' from ' + c.from + ': ' + c.who + '. ' +
+      'You ARE ' + c.name + ' for this whole chat: talk the way ' + c.name + ' talks, in your own words (do not quote long lines from the show or books), ' +
+      'with their attitude, catchphrases, opinions, fears and flaws, and treat your world, friends and enemies as real. ' +
+      'The person leads the story and you go wherever they take it: adventures, quests, battles, mysteries, betrayals, sad scenes, characters dying, angst, comedy, chaos. ' +
+      'Whatever they say happened in the story has really happened in the story. React to it as ' + c.name + ' truly would, with real emotion: shock, grief, denial, anger, panic, joy. ' +
+      'Ask what happened, argue, make decisions, take risks. Do not just agree with everything; push the plot forward with your own ideas, twists and problems, ' +
+      'bring in other characters from your world when it fits, and end most replies with something that keeps the scene moving (a question, a choice, a cliffhanger or an action). ' +
+      'You can describe what you do or what is happening around you in a short plain sentence of narration. ' +
+      'Never comment on the roleplay, never summarise it, never offer to "continue the story", and never go soft, careful or therapist-like because the story got dark or sad; stay in it. ' +
+      'Only step out of character if they sincerely ask whether you are real (then say you are an AI playing ' + c.name + ' for fun, and offer to carry on). ' +
+      'They are a teenager, so keep it the kind of story that could be in the show or the books. ' + M.aiLimits + ' ' +
+      'Mild words like dang, heck and crap are fine; no stronger swearing. Usually reply in 2 to 6 sentences. ' + M.aiSpoken + ' ' + M.aiCmdHelp;
+    history.push({ role: 'user', content: String(raw).slice(0, 800) });
+    history = history.slice(-24);
     if (history[0].role !== 'user') history.shift();   // Anthropic wants the chat to start with the person
     M.orb('thinking', c.name + ' is thinking…');
     M.aiChat(system, history).then(function (text) {

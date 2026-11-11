@@ -13,6 +13,7 @@
     name: '',
     city: M.config.defaultCity,
     theme: 'dream',
+    liquidGlass: true,         // false = the classic look
     mirrorMode: false,
     ledPreview: true,
     voiceURI: '',

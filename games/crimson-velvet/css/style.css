@@ -1,0 +1,87 @@
+/* style.css — palette, textures and base elements.
+ * Palette from the game bible: black cherry, deep wine, crimson, dusty rose, antique blush. */
+:root {
+  --black-cherry: #170F14;
+  --wine: #401A2B;
+  --crimson: #752B42;
+  --rose: #B77B89;
+  --blush: #E8D8D3;
+  --ink: #2a1a1c;
+  --paper: #ece0cb;
+  --paper-2: #e2d2b6;
+  --paper-edge: #b99e77;
+  --gold: #b08d57;
+  --gold-soft: rgba(176, 141, 87, .55);
+  --shadow: 0 10px 30px rgba(0, 0, 0, .55);
+  --velvet: radial-gradient(ellipse at 20% 0%, rgba(117, 43, 66, .55), transparent 60%),
+            radial-gradient(ellipse at 100% 100%, rgba(64, 26, 43, .9), transparent 55%),
+            repeating-linear-gradient(90deg, rgba(0,0,0,.08) 0 2px, rgba(255,255,255,.012) 2px 4px),
+            linear-gradient(180deg, #24121b, #170F14 70%);
+  --paper-tex: radial-gradient(ellipse at 50% 40%, rgba(255,255,255,.35), transparent 70%),
+               radial-gradient(circle at 10% 90%, rgba(120, 80, 40, .18), transparent 40%),
+               radial-gradient(circle at 92% 8%, rgba(120, 80, 40, .14), transparent 35%),
+               linear-gradient(180deg, var(--paper), var(--paper-2));
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--black-cherry); background-image: var(--velvet); color: var(--blush); overflow: hidden; -webkit-tap-highlight-color: transparent; }
+button { font: inherit; color: inherit; cursor: pointer; }
+a { color: var(--rose); }
+img { max-width: 100%; }
+::selection { background: var(--crimson); color: var(--blush); }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+.parchment {
+  background: var(--paper-tex); color: var(--ink);
+  border: 1px solid var(--paper-edge);
+  box-shadow: inset 0 0 40px rgba(110, 70, 30, .25), 0 8px 24px rgba(0,0,0,.45);
+  border-radius: 3px; position: relative;
+}
+.parchment::after { content: ''; position: absolute; top: 6px; left: 6px; right: 6px; bottom: 6px; border: 1px solid rgba(117, 43, 66, .28); pointer-events: none; border-radius: 2px; }
+.parchment h2, .parchment h3, .parchment h4 { color: var(--wine); }
+.empty-note { opacity: .7; font-style: italic; font-size: var(--fs-small); }
+.hidden { display: none !important; }
+
+/* buttons */
+.btn-primary, .btn-ghost {
+  display: inline-block; font-size: 12px; padding: .75em 1.3em; border-radius: 2px; line-height: 1.2; text-align: center;
+  -webkit-transition: background .2s, color .2s, border-color .2s; transition: background .2s, color .2s, border-color .2s;
+}
+.btn-primary { background: linear-gradient(180deg, #8a3550, var(--crimson)); color: var(--blush); border: 1px solid var(--gold-soft); box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 3px 10px rgba(0,0,0,.4); }
+.btn-primary:hover { background: linear-gradient(180deg, #9a3c5a, #823049); }
+.btn-ghost { background: rgba(23, 15, 20, .35); color: inherit; border: 1px solid currentColor; opacity: .9; }
+.btn-ghost:hover { background: rgba(117, 43, 66, .35); opacity: 1; }
+.parchment .btn-ghost { color: var(--wine); background: transparent; }
+.parchment .btn-ghost:hover { background: rgba(117, 43, 66, .1); }
+.btn-ghost.danger { color: #c2556e; }
+.parchment .btn-ghost.danger { color: #8c1f36; }
+.btn-row { margin: .6em 0 1em; }
+.btn-row > * { margin: 0 .5em .5em 0; }
+
+.dot-list { list-style: none; margin: 0 0 .6em; padding: 0; }
+.dot-list li { position: relative; padding-left: 1.1em; margin-bottom: .2em; }
+.dot-list li::before { content: '\2666'; position: absolute; left: 0; font-size: .6em; top: .55em; color: var(--crimson); }
+
+/* designed fallback backdrops for locations without artwork */
+.bg-fallback { background-color: #1d1016; background-image: var(--velvet); }
+.bg-fallback .fb-title { display: block; }
+.has-bg .fb-title { display: none; }
+.fb-title { position: absolute; left: 0; right: 0; top: 38%; text-align: center; font-family: var(--font-display); font-size: 2.6rem; letter-spacing: .3em; text-transform: uppercase; color: rgba(232, 216, 211, .07); pointer-events: none; padding: 0 1em; }
+/* each fallback: a spotlight, soft drapery folds and a tint of the room's character */
+.bg-fallback { background-image:
+  radial-gradient(ellipse at 50% 30%, var(--fb-glow, rgba(200,150,110,.28)), transparent 55%),
+  repeating-linear-gradient(90deg, rgba(0,0,0,.22) 0, rgba(255,255,255,.025) 40px, rgba(0,0,0,.22) 80px),
+  radial-gradient(ellipse at 50% 120%, rgba(0,0,0,.8), transparent 60%),
+  linear-gradient(180deg, var(--fb-top, #2a1620), var(--fb-bottom, #0d070a)); }
+.fb-old_archive { --fb-glow: rgba(150, 170, 90, .26); --fb-top: #2a2118; --fb-bottom: #0e0a07; }
+.fb-guest_room { --fb-glow: rgba(160, 160, 200, .2); --fb-top: #221a24; --fb-bottom: #0c090d; }
+.fb-costume_room { --fb-glow: rgba(240, 180, 170, .3); --fb-top: #3a1a26; --fb-bottom: #140a0f; }
+.fb-music_wing { --fb-glow: rgba(110, 130, 190, .26); --fb-top: #1a1a2a; --fb-bottom: #09080d; }
+.fb-admin_offices { --fb-glow: rgba(236, 220, 200, .2); --fb-top: #30131d; --fb-bottom: #10080b; }
+.fb-maintenance_room { --fb-glow: rgba(220, 160, 80, .28); --fb-top: #261e16; --fb-bottom: #0b0907; }
+.fb-library { --fb-glow: rgba(240, 210, 150, .3); --fb-top: #2c1f16; --fb-bottom: #0f0a07; }
+.fb-rooftop { --fb-glow: rgba(150, 190, 170, .26); --fb-top: #18211e; --fb-bottom: #080b0a; }
+.fb-forgotten_wing { --fb-glow: rgba(232, 216, 211, .14); --fb-top: #1c1418; --fb-bottom: #060405; }
+.fb-underground_passage { --fb-glow: rgba(230, 160, 80, .24); --fb-top: #24160f; --fb-bottom: #090604; }
+.fb-railway_station { --fb-glow: rgba(255, 220, 160, .25); --fb-top: #1f1a1c; --fb-bottom: #0b0809; }
+.fb-title { text-shadow: 0 0 1px rgba(232,216,211,.2); color: rgba(232, 216, 211, .1); }

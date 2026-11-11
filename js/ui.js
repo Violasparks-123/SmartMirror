@@ -2,7 +2,7 @@
 (function () {
   var $ = function (id) { return document.getElementById(id); };
   M.$ = $;
-  M.screens = ['home', 'weather', 'schedule', 'music', 'videos'];   // the order "Screens" cycles through
+  M.screens = ['home', 'weather', 'schedule', 'music', 'videos', 'games'];   // the order "Screens" cycles through
   M.current = 'home';
 
   M.show = function (name) {
@@ -11,6 +11,7 @@
     M.current = name;
     if (name === 'settings' && M.renderSettings) M.renderSettings();
     if (name === 'schedule' && M.renderSchedule) M.renderSchedule();
+    if (name === 'games' && M.renderGames) M.renderGames();
   };
   M.nextScreen = function (dir) {
     var i = M.screens.indexOf(M.current);
@@ -48,6 +49,9 @@
     var m = $('mirror');
     m.setAttribute('data-theme-name', M.settings.theme);
     m.classList.toggle('mirror-mode', !!M.settings.mirrorMode);
+    // Liquid Glass or the classic look: swap the style sheet
+    var skin = $('skin'), want = (M.settings.liquidGlass === false ? 'css/classic.css' : 'css/mirror.css') + '?v=6';
+    if (skin && skin.getAttribute('href') !== want) skin.setAttribute('href', want);
   };
 
   /* On-screen preview of the LED strip (the real strip is driven by lights.js) */

@@ -1,0 +1,28 @@
+/* ===== Ambient animation — subtle, atmospheric ===== */
+@keyframes screenIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes breathe { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.03); filter: brightness(1.08); } }
+@keyframes idleSway { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-4px) rotate(-0.25deg); } }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
+@keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.25); opacity: 0.75; } }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes slowZoom { from { transform: scale(1.04); } to { transform: scale(1.12); } }
+@keyframes flicker { 0%, 100% { opacity: 1; transform: scaleY(1); } 30% { opacity: 0.8; transform: scaleY(0.92); } 60% { opacity: 0.95; transform: scaleY(1.06); } }
+@keyframes twinkle { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.9; } }
+@keyframes drift { 0% { transform: translate(0, 0); opacity: 0; } 10% { opacity: 0.8; } 100% { transform: translate(18px, -90px); opacity: 0; } }
+@keyframes fogMove { 0%, 100% { transform: translateX(-12px); } 50% { transform: translateX(14px); } }
+@keyframes rayShift { 0%, 100% { opacity: 0.85; } 50% { opacity: 0.55; } }
+@keyframes pulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+
+.flicker { transform-box: fill-box; transform-origin: 50% 100%; animation: flicker 1.6s ease-in-out infinite; }
+.twinkle { animation: twinkle 3.5s ease-in-out infinite; }
+.drift { animation: drift 9s linear infinite; }
+.fog { animation: fogMove 18s ease-in-out infinite; }
+.ray { animation: rayShift 9s ease-in-out infinite; }
+.pulse { animation: pulse 3.2s ease-in-out infinite; }
+.spray { animation: pulse 2.4s ease-in-out infinite; }
+
+body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.12s !important; }
+@media (prefers-reduced-motion: reduce) {
+  .astoria-inner, .fog, .drift, .ray, .title-bg, .event-hero, .summon-ring { animation: none !important; }
+}

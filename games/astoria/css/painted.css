@@ -1,0 +1,165 @@
+/* =====================================================================
+   Painted UI kit (assets/ui3): buttons, nameplate, top bar, currency
+   pills, title logo and painted item icons.
+
+   Frames use 9-slice "border-image": the ornate end caps keep their
+   shape and only the plain middle band stretches, so one picture fits
+   buttons of any width. Each cap's width is its height multiplied by
+   the cap's own proportions (the numbers after "var(--h) *").
+   ===================================================================== */
+
+/* ---------- Title logo ---------- */
+.boot-logo { width: min(80vw, 560px); height: auto; filter: drop-shadow(0 0 28px rgba(120, 80, 200, 0.35)); animation: logoIn 1.2s ease both; }
+.title-logo { margin: 0 0 4px; line-height: 0; }
+.title-logo img { display: block; width: min(88vw, 620px); height: auto; margin: 0 auto; filter: drop-shadow(0 0 30px rgba(120, 80, 200, 0.35)); }
+@keyframes logoIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+
+/* ---------- Painted item icons ---------- */
+.item-art.painted { background: radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--ib) 28%, transparent), rgba(10, 7, 18, 0.92) 74%); }
+.item-art.painted { overflow: hidden; }
+.item-art.painted img { width: 86%; height: auto; aspect-ratio: 1 / 1; object-fit: contain; filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 5px color-mix(in srgb, var(--ib) 45%, transparent)); user-select: none; }
+.item-art.painted.toast-item img { width: 96%; }
+
+/* ---------- Dialogue choice buttons ---------- */
+.choice-btn {
+  --h: 60px;
+  min-height: var(--h); padding: 12px 4px; border-radius: 0;
+  background: none; box-shadow: none;
+  border-style: solid; border-color: transparent;
+  border-width: 0 calc(var(--h) * 0.915) 0 calc(var(--h) * 0.949);
+  border-image: url(../assets/ui3/choice_normal.webp) 0 110 0 114 fill;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
+  transition: filter 0.2s, transform 0.15s;
+}
+.choice-btn:hover, .choice-btn:focus-visible {
+  background: none; box-shadow: none;
+  border-width: 0 calc(var(--h) * 0.968);
+  border-image: url(../assets/ui3/choice_hover.webp) 0 124 fill;
+  filter: drop-shadow(0 0 12px rgba(170, 120, 240, 0.45));
+  outline: none;
+}
+.choice-btn:active {
+  border-width: 0 calc(var(--h) * 0.903) 0 calc(var(--h) * 0.909);
+  border-image: url(../assets/ui3/choice_pressed.webp) 0 108 0 109 fill;
+  transform: translateY(1px);
+}
+.choice-btn .choice-text { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); }
+@media (max-width: 600px) { .choice-btn { --h: 56px; font-size: 17px; padding: 10px 2px; } }
+
+/* ---------- Main action buttons ---------- */
+.btn.primary {
+  --bh: 44px;
+  min-height: var(--bh); padding: 3px 4px; border-radius: 0;
+  background: none; box-shadow: none; color: #f2ecff;
+  border-style: solid; border-color: transparent;
+  border-width: 0 calc(var(--bh) * 0.9);
+  border-image: url(../assets/ui3/btn_plain2.webp) 0 118 fill;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+  transition: filter 0.2s, transform 0.15s;
+}
+.btn.primary:hover { box-shadow: none; filter: brightness(1.18) drop-shadow(0 0 10px rgba(185, 156, 255, 0.55)); }
+.btn.primary:active { transform: translateY(1px); filter: brightness(0.92); }
+.btn.small.primary, .card .btn.small.primary { --bh: 34px; min-height: var(--bh); padding: 2px 0; font-size: 14.5px; white-space: nowrap; border-width: 0 calc(var(--bh) * 0.62); }
+.btn.small.primary.claim { border-width: 0 calc(var(--bh) * 0.6) 0 calc(var(--bh) * 0.72); }
+.btn.big.primary { --bh: 58px; padding: 6px 8px; font-size: 20px; }
+.btn.primary.claim {
+  border-width: 0 calc(var(--bh) * 0.909) 0 calc(var(--bh) * 1.074);
+  border-image: url(../assets/ui3/btn_claim.webp) 0 102 0 120 fill;
+}
+.btn.primary[disabled] { filter: grayscale(0.7) brightness(0.7); }
+
+/* ---------- Speaker nameplate ---------- */
+.dlg-name {
+  --nh: 40px;
+  height: var(--nh); padding: 0 4px; margin: -38px 0 8px -10px;
+  border-style: solid; border-color: transparent;
+  border-width: 0 calc(var(--nh) * 1.109) 0 calc(var(--nh) * 1.08);
+  border-image: url(../assets/ui3/nameplate.webp) 0 133 0 130 fill;
+  font-size: 19px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+.dlg-name .ico { display: none; }
+.dlg-name.hidden { display: none; }
+.dlg-box { margin-top: 26px; }
+@media (min-width: 900px) { .dlg-name { --nh: 46px; font-size: 21px; margin-top: -42px; } }
+
+/* ---------- Top bar plate ---------- */
+.topbar > * { position: relative; z-index: 1; }
+.topbar::before {
+  content: ''; position: absolute; inset: calc(2px + var(--safe-t)) 2px 2px; z-index: 0; pointer-events: none;
+  border-style: solid; border-color: transparent;
+  border-width: 0 64px 0 72px;
+  border-image: url(../assets/ui3/topbar_plate.webp) 0 323 0 366 fill;
+  opacity: 0.9;
+}
+@media (min-width: 900px) {
+  .topbar::before { border-width: 0 150px 0 170px; inset: calc(4px + var(--safe-t)) 4px 4px; }
+}
+
+/* ---------- Currency pills (the painted pill carries its own coin/star and plus) ---------- */
+.currency.painted-pill {
+  position: relative; justify-content: center;
+  box-sizing: border-box; flex: none;
+  height: 38px; width: 116px; padding: 0 29px 0 32px;
+  border: 0; border-radius: 0;
+  background: url(../assets/ui3/pill_crowns.webp) center / 100% 100% no-repeat;
+}
+.currency.painted-pill.cur-moonstone { background-image: url(../assets/ui3/pill_moonstones.webp); }
+.painted-pill .cur-ico { display: none; }
+.painted-pill .cur-val { flex: 1; text-align: center; min-width: 0; font-size: 15px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9); }
+.painted-pill .cur-plus { position: absolute; top: 0; right: 0; width: 26%; height: 100%; border-radius: 0; background: none; }
+.painted-pill .cur-plus > * { opacity: 0; }
+.painted-pill .cur-plus:hover { background: radial-gradient(closest-side, rgba(255, 255, 255, 0.12), transparent); }
+@media (min-width: 900px) { .currency.painted-pill { height: 44px; width: 136px; padding: 0 34px 0 38px; } .painted-pill .cur-val { font-size: 17px; } }
+
+/* ---------- Locked and earned choices ---------- */
+/* Locked: the chained plate. The chain hangs below the button, drawn into the
+   space under it (border-image-outset) so the text stays centred on the band. */
+.choice-btn.locked {
+  --lo: calc(var(--h) * 0.33);
+  flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px;
+  margin-bottom: var(--lo);
+  border-width: 0 calc((var(--h) + var(--lo)) * 0.963) 0 calc((var(--h) + var(--lo)) * 1.005);
+  border-image: url(../assets/ui3/choice_locked.webp) 0 154 0 161 fill / 0 calc((var(--h) + var(--lo)) * 0.963) 0 calc((var(--h) + var(--lo)) * 1.005) / 0 0 var(--lo) 0 stretch;
+  cursor: not-allowed; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.5));
+}
+.choice-btn.locked:hover, .choice-btn.locked:active, .choice-btn.locked:focus-visible {
+  border-width: 0 calc((var(--h) + var(--lo)) * 0.963) 0 calc((var(--h) + var(--lo)) * 1.005);
+  border-image: url(../assets/ui3/choice_locked.webp) 0 154 0 161 fill / 0 calc((var(--h) + var(--lo)) * 0.963) 0 calc((var(--h) + var(--lo)) * 1.005) / 0 0 var(--lo) 0 stretch;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.5)); transform: none;
+}
+.choice-btn.locked .choice-text { color: #a39ab4; font-style: italic; flex: none; }
+.choice-btn.locked.locked { flex-wrap: nowrap; }
+.lock-need { font-family: var(--caps); font-size: 11.5px; letter-spacing: 0.06em; color: #c9b8ea; opacity: 0.85; }
+.lock-need { display: inline-flex; align-items: center; gap: 5px; }
+.lock-need .ico { width: 11px; height: 11px; flex: none; opacity: 0.85; }
+.choice-btn.shake { animation: lockShake 0.4s ease; }
+@keyframes lockShake { 0%, 100% { translate: 0; } 20% { translate: -5px; } 40% { translate: 5px; } 60% { translate: -3px; } 80% { translate: 3px; } }
+
+/* Earned: a choice your bond, nature or evidence made possible. */
+.choice-btn { flex-wrap: wrap; row-gap: 4px; }
+.choice-btn .choice-text { flex: 1 1 60%; }
+.choice-btn.earned { filter: drop-shadow(0 0 10px rgba(201, 167, 106, 0.35)) drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45)); }
+.earned-tag { display: inline-flex; align-items: center; gap: 4px; font-family: var(--caps); font-size: 11px; letter-spacing: 0.05em; color: #f0d9a8; border: 1px solid rgba(201, 167, 106, 0.55); background: rgba(40, 26, 10, 0.55); border-radius: 999px; padding: 2px 8px 2px 6px; white-space: nowrap; }
+.earned-tag .ico { width: 11px; height: 11px; color: var(--gold); }
+@media (prefers-reduced-motion: reduce) { .choice-btn.shake { animation: none; } }
+
+/* Locked Ask-topics and secrets: the hint sits under the label */
+.list-btn .lb-text { display: flex; flex-direction: column; gap: 3px; flex: 1; text-align: left; }
+.list-btn.locked { cursor: not-allowed; opacity: .72; }
+.list-btn.locked .lb-text { font-style: italic; color: #a39ab4; }
+.list-btn.locked .lock-need { font-style: normal; }
+.list-btn .lock-need .ico { display: none; }
+
+/* Journal · Unspoken */
+.unspoken { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+.unspoken .uns-ico { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); background: rgba(20, 12, 36, .8); color: #b9a7dd; }
+.unspoken .uns-ico .ico { width: 18px; height: 18px; }
+.unspoken .uns-text { margin: 0 0 4px; font-family: var(--serif, inherit); font-style: italic; color: #b3a9c6; line-height: 1.35; }
+.unspoken .uns-need { font-family: var(--caps); font-size: 11px; letter-spacing: .06em; color: #c9b8ea; opacity: .85; }
+.unspoken.said { border-color: rgba(201, 167, 106, .45); }
+.unspoken.said .uns-text { color: #efe6ff; font-style: normal; }
+.unspoken.said .uns-need { color: var(--gold); }
+.unspoken.said .uns-ico { color: var(--gold); border-color: rgba(201, 167, 106, .5); }
+

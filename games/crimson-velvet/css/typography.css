@@ -1,0 +1,35 @@
+/* typography.css — type faces and hierarchy.
+ * Cinzel (titles, labels), EB Garamond (body and dialogue), IM Fell English (handwriting).
+ * Stand-ins until the reference font file is supplied: put it in assets/fonts/
+ * and change the first name in --font-display / --font-body below. */
+@font-face { font-family: 'Cinzel'; font-weight: 400; font-display: swap; src: url('../assets/fonts/cinzel-latin-400-normal.woff2') format('woff2'), url('../assets/fonts/cinzel-latin-400-normal.woff') format('woff'); }
+@font-face { font-family: 'Cinzel'; font-weight: 600; font-display: swap; src: url('../assets/fonts/cinzel-latin-600-normal.woff2') format('woff2'), url('../assets/fonts/cinzel-latin-600-normal.woff') format('woff'); }
+@font-face { font-family: 'Cinzel'; font-weight: 700; font-display: swap; src: url('../assets/fonts/cinzel-latin-700-normal.woff2') format('woff2'), url('../assets/fonts/cinzel-latin-700-normal.woff') format('woff'); }
+@font-face { font-family: 'EB Garamond'; font-weight: 400; font-display: swap; src: url('../assets/fonts/eb-garamond-latin-400-normal.woff2') format('woff2'), url('../assets/fonts/eb-garamond-latin-400-normal.woff') format('woff'); }
+@font-face { font-family: 'EB Garamond'; font-weight: 400; font-style: italic; font-display: swap; src: url('../assets/fonts/eb-garamond-latin-400-italic.woff2') format('woff2'), url('../assets/fonts/eb-garamond-latin-400-italic.woff') format('woff'); }
+@font-face { font-family: 'EB Garamond'; font-weight: 500; font-display: swap; src: url('../assets/fonts/eb-garamond-latin-500-normal.woff2') format('woff2'), url('../assets/fonts/eb-garamond-latin-500-normal.woff') format('woff'); }
+@font-face { font-family: 'EB Garamond'; font-weight: 600; font-display: swap; src: url('../assets/fonts/eb-garamond-latin-600-normal.woff2') format('woff2'), url('../assets/fonts/eb-garamond-latin-600-normal.woff') format('woff'); }
+@font-face { font-family: 'IM Fell English'; font-weight: 400; font-display: swap; src: url('../assets/fonts/im-fell-english-latin-400-normal.woff2') format('woff2'), url('../assets/fonts/im-fell-english-latin-400-normal.woff') format('woff'); }
+@font-face { font-family: 'IM Fell English'; font-weight: 400; font-style: italic; font-display: swap; src: url('../assets/fonts/im-fell-english-latin-400-italic.woff2') format('woff2'), url('../assets/fonts/im-fell-english-latin-400-italic.woff') format('woff'); }
+
+:root {
+  --font-display: 'Cinzel', 'Times New Roman', serif;
+  --font-body: 'EB Garamond', Georgia, serif;
+  --font-hand: 'IM Fell English', 'EB Garamond', Georgia, serif;
+  --fs-body: 18px;
+  --fs-small: 15px;
+  --fs-label: 12px;
+  --lh: 1.5;
+}
+html { font-size: var(--fs-body); }
+body { font-family: var(--font-body); line-height: var(--lh); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+h1, h2, h3, h4, .display { font-family: var(--font-display); font-weight: 600; letter-spacing: .06em; line-height: 1.2; margin: 0; }
+h1 { font-size: 1.7rem; }
+h2 { font-size: 1.15rem; }
+h3 { font-size: .95rem; }
+h4 { font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; margin: 1.1em 0 .35em; }
+p { margin: 0 0 .7em; }
+.label, .panel-head, .detail-kicker, .plaque-area, .ev-id, .jtag, .rel-badge, .chip, .seg-btn, .nav-btn, .btn-primary, .btn-ghost, .vn-choice-tag, .stat-label {
+  font-family: var(--font-display); letter-spacing: .12em; text-transform: uppercase;
+}
+@media (max-width: 700px) { :root { --fs-body: 17px; } }

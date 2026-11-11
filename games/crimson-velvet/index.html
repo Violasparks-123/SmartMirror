@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#170F14">
+<title>Crimson Velvet</title>
+<link rel="stylesheet" href="css/typography.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+<div id="title" class="title" aria-live="polite"></div>
+
+<div id="game" class="game hidden">
+  <header class="topbar">
+    <div class="brand">Crimson <span>Velvet</span></div>
+    <div class="hdr-info"><span id="hdr-chapter" class="hdr-chapter"></span><span class="hdr-sep">·</span><span id="hdr-place" class="hdr-place"></span></div>
+  </header>
+  <nav id="mainnav" class="mainnav" aria-label="Main navigation"></nav>
+  <main id="page" class="page-host" tabindex="-1"></main>
+  <footer class="statusbar">
+    <div class="stat"><span class="stat-label">Credibility</span><span class="stat-bar"><i id="bar-cred"></i></span><span id="num-cred" class="stat-num"></span></div>
+    <div class="stat heat"><span class="stat-label">Heat</span><span class="stat-bar"><i id="bar-heat"></i></span><span id="num-heat" class="stat-num"></span></div>
+  </footer>
+</div>
+
+<div id="chapter-card" class="chapter-card" aria-hidden="true"></div>
+<div id="modal" class="modal"></div>
+<div id="toasts" class="toasts" aria-live="polite"></div>
+
+<noscript><p style="color:#E8D8D3;padding:2em;font-family:Georgia,serif">Crimson Velvet needs JavaScript turned on to play.</p></noscript>
+
+<!-- story content -->
+<script src="data/characters.js"></script>
+<script src="data/locations.js"></script>
+<script src="data/evidence.js"></script>
+<script src="data/journal.js"></script>
+<script src="data/dialogue.js"></script>
+<script src="data/endings.js"></script>
+<!-- engine -->
+<script src="js/storage.js"></script>
+<script src="js/events.js"></script>
+<script src="js/trust.js"></script>
+<script src="js/assets.js"></script>
+<script src="js/dialogue.js"></script>
+<script src="js/endings.js"></script>
+<script src="js/cast.js"></script>
+<script src="js/map.js"></script>
+<script src="js/files.js"></script>
+<script src="js/journal.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/visit.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -365,6 +365,11 @@
     M.settings.theme = th; M.save(); M.applyTheme(); return M.say(cap(th) + ' theme.');
   });
   add(['^(dream|minimal|cyberpunk|retro|space|sunset)( mode)?$'], function (m) { M.settings.theme = m[1]; M.save(); M.applyTheme(); return M.say(cap(m[1]) + ' theme.'); });
+  add(['liquid glass( look| mode)? (on|off)', '(turn|switch) (on|off) (the )?liquid glass', '^(classic|old) (look|mode|style|ui)$', '^(glass|liquid glass|new) (look|mode|style|ui)$', '^liquid glass$'], function (m, t) {
+    var on = /classic|old/.test(t) ? false : /\boff\b/.test(t) ? false : true;
+    M.settings.liquidGlass = on; M.save(); M.applyTheme(); if (M.current === 'settings') M.renderSettings();
+    return M.say(on ? 'Liquid Glass look is on.' : 'Back to the classic look.');
+  });
   add(['mirror mode (on|off)', '(turn|switch) (on|off) mirror mode'], function (m, t) { M.settings.mirrorMode = /\bon\b/.test(t); M.save(); M.applyTheme(); return M.say('Mirror mode ' + (M.settings.mirrorMode ? 'on.' : 'off.')); });
   add(['(change|switch|next|different|new) voice', 'talk differently'], function () {
     if (!M.voices.length) return M.say('No other voices are available.');
@@ -452,6 +457,8 @@
         return M.say(pick(['Ha! Good one.', 'I did not see that coming. Nice.', 'That was terrible. I love it.']));
       }
     }
+    // On the game shelf or inside a game? "next", "choose 2", "show numbers"… go to the game
+    if (!opts.fromAI && M.gameRoute) { var gr = M.gameRoute(t); if (gr !== false) return gr; }
     // Chatting with a character? They answer everything except normal mirror commands
     if (!opts.fromAI && M.characterRoute) { var ch = M.characterRoute(raw, t); if (ch !== false) return ch; }
     var ALL = FIRST.concat(R);

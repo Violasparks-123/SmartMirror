@@ -17,10 +17,10 @@
   /* ---------- Touch spots: tap, double-tap, hold ---------- */
   var spotActions = {
     1: { tap: function () { M.listen(); }, double: function () { M.cancelListening(); }, hold: function () { M.runCommand('secret mode', { silentEcho: true }); } },
-    // Spot 2 is the "media" spot: music normally, videos when the video shelf or a video is on screen
-    2: { tap: function () { if (M.current === 'videos') M.shelfMove(1); else if (M.current === 'video') M.toggleVideo(); else M.musicToggle(); },
-         double: function () { if (M.current === 'videos') M.shelfMove(-1); else if (M.current === 'video') M.backToShelf(); else { M.musicNext(); M.show('music'); } },
-         hold: function () { if (M.current === 'videos') M.shelfPlay(); else if (M.current === 'video') M.closeVideo(); else M.show('music'); } },
+    // Spot 2 is the "media" spot: music normally, videos or games when their shelf (or a video / game) is on screen
+    2: { tap: function () { if (M.current === 'games') M.gameMove(1); else if (M.current === 'game') M.gameNext(); else if (M.current === 'videos') M.shelfMove(1); else if (M.current === 'video') M.toggleVideo(); else M.musicToggle(); },
+         double: function () { if (M.current === 'games') M.gameMove(-1); else if (M.current === 'game') M.gameNumbers(); else if (M.current === 'videos') M.shelfMove(-1); else if (M.current === 'video') M.backToShelf(); else { M.musicNext(); M.show('music'); } },
+         hold: function () { if (M.current === 'games') M.gamePlay(); else if (M.current === 'game') M.closeGame(); else if (M.current === 'videos') M.shelfPlay(); else if (M.current === 'video') M.closeVideo(); else M.show('music'); } },
     3: { tap: function () { M.nextScreen(1); }, double: function () { M.nextScreen(-1); }, hold: function () { M.show('home'); } },
     4: { tap: function () { M.cycleColor(); }, double: function () { M.setLights({ mode: 'party' }); M.toast('Party mode'); }, hold: function () { M.setLights({ on: !M.settings.lights.on }); M.toast(M.settings.lights.on ? 'Lights on' : 'Lights off'); } }
   };
@@ -89,6 +89,7 @@
       b.onclick = function () { S.theme = t[0]; M.save(); M.applyTheme(); M.renderSettings(); };
       g.appendChild(b);
     });
+    $('setGlass').checked = S.liquidGlass !== false;
     $('setMirrorMode').checked = !!S.mirrorMode;
     $('setLedPreview').checked = !!S.ledPreview;
     $('setName').value = S.name || '';
@@ -118,6 +119,7 @@
   };
   function bindSettings() {
     var S = M.settings;
+    $('setGlass').onchange = function (e) { S.liquidGlass = e.target.checked; M.save(); M.applyTheme(); };
     $('setMirrorMode').onchange = function (e) { S.mirrorMode = e.target.checked; M.save(); M.applyTheme(); };
     $('setLedPreview').onchange = function (e) { S.ledPreview = e.target.checked; M.save(); M.renderLedPreview(); };
     $('setName').onchange = function (e) { S.name = e.target.value.trim().slice(0, 30); M.save(); M.tickClock(); };
@@ -202,7 +204,7 @@
     M.renderToday(); M.renderReminders(); M.renderMessages(); M.renderEventLine();
     setInterval(function () {
       M.renderToday(); M.renderEventLine();
-      if (Date.now() - lastPoke > M.config.idleMinutes * 60000 && !M.isPlaying() && M.current !== 'settings') { M.show('home'); }
+      if (Date.now() - lastPoke > M.config.idleMinutes * 60000 && !M.isPlaying() && M.current !== 'settings' && M.current !== 'game') { M.show('home'); }
     }, 30000);
     bindSettings();
     M.initMusic();
