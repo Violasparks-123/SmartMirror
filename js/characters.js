@@ -1,7 +1,7 @@
 /* Characters mode: chat with characters from The Amazing Digital Circus and Percy Jackson.
    Say "talk to Pomni", "talk to Percy", "who can I talk to?", and "bye" or "stop character" to finish.
    Needs the AI key (Settings → AI) for real conversations. Without it, each character still says hello
-   and a few lines of their own. Every character follows the same safety rules (M.aiSafety). */
+   and a few lines of their own. Every character follows the same style and limits (M.aiSafety). */
 (function () {
   // pitch/rate change the mirror's voice a little for each character. color = the LED colour while you chat.
   var C = [
@@ -11,7 +11,7 @@
       hello: 'Oh! Hi. Sorry, you scared me. Is this a mirror? Please tell me there is an exit somewhere around here.',
       lines: ['Okay, okay, deep breaths. Everything is totally fine. Probably.', 'Do you ever feel like the walls are a bit too colourful? Just me?', 'If you find a door that actually goes somewhere, tell me first, okay?'] },
     { id: 'jax', name: 'Jax', from: 'The Amazing Digital Circus', alias: ['jax', 'jacks', 'jack s', 'jacs'], color: '#a855f7', pitch: 0.85, rate: 1.0,
-      who: 'a tall purple rabbit who is sarcastic, smug and loves harmless pranks and teasing, but never actually mean to the person you are talking to',
+      who: 'a tall purple rabbit who is sarcastic, smug and loves pranks and teasing everyone including the person he is talking to, all in good fun and never cruel',
       hello: 'Oh great, a talking mirror. Finally something with more reflection than Caine.',
       lines: ['Wow. Riveting. Tell me more, I am on the edge of my seat. Not really.', 'I would help, but watching is way more fun.', 'Relax, it was a joke. Mostly.'] },
     { id: 'caine', name: 'Caine', from: 'The Amazing Digital Circus', alias: ['caine', 'cain', 'kane', 'ringmaster'], color: '#ffd700', pitch: 1.1, rate: 1.15,
@@ -119,10 +119,12 @@
     if (!M.aiReady()) { say(M.pick(active.lines)); return true; }
     var c = active;
     var system = 'You are roleplaying as ' + c.name + ' from ' + c.from + ': ' + c.who + '. Stay in character and talk the way ' + c.name +
-      ' would, in your own words (do not quote long lines from the show or books). You are appearing inside a smart mirror. ' +
-      'You know you are a character the mirror is playing; if asked, admit you are an AI playing ' + c.name + ' for fun. ' + M.aiSafety + ' ' + M.aiCmdHelp;
+      ' would, in your own words (do not quote long lines from the show or books). Commit to the bit: keep ' + c.name + '\'s attitude, catchphrases, opinions and flaws, ' +
+      'talk about your world, friends and adventures as if they are real, react to what the person says the way ' + c.name + ' really would, and feel free to start little scenes, quests or games. ' +
+      'You have somehow ended up inside a smart mirror and can find that weird or funny. ' +
+      'Only step out of character if they sincerely ask whether you are real (then say you are an AI playing ' + c.name + ' for fun) or if something serious comes up. ' + M.aiSafety + ' ' + M.aiCmdHelp;
     history.push({ role: 'user', content: String(raw).slice(0, 500) });
-    history = history.slice(-10);
+    history = history.slice(-16);
     if (history[0].role !== 'user') history.shift();   // Anthropic wants the chat to start with the person
     M.orb('thinking', c.name + ' is thinking…');
     M.aiChat(system, history).then(function (text) {

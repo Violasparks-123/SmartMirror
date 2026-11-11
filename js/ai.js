@@ -8,11 +8,22 @@
   M.aiReady = function () { return !!(M.settings.ai && M.settings.ai.key); };
   M.aiModel = function () { var a = M.settings.ai; return (a.model || '').trim() || DEFAULT_MODEL[a.provider] || DEFAULT_MODEL.openai; };
 
-  // Safety rules every AI reply follows (the mirror is used by a teen and their family)
-  M.aiSafety = 'The person talking to you is a young teenager using a smart mirror at home. Keep everything friendly, kind and age-appropriate: ' +
-    'no romance or flirting, no swearing, nothing graphic or frightening, nothing dangerous. If they seem upset, unsafe or in trouble, ' +
-    'answer gently and warmly and suggest talking to a parent or another trusted adult. Never ask for personal details like address, school or passwords. ' +
-    'Your reply is spoken aloud by the mirror, so keep it short (1 to 3 sentences), with no lists, emojis, markdown or stage directions in asterisks.';
+  // How the AI talks, plus the few real limits it keeps (the mirror is used by a teen and their family)
+  M.aiSafety = 'You are talking with a teenager at home through their smart mirror. Be actually fun to talk to: playful, quick and a bit cheeky, ' +
+    'with real opinions, jokes, hot takes and friendly banter. Talk casually and use current slang naturally (lowkey, no cap, slay, bet, it\'s giving, vibe check) ' +
+    'without forcing it into every sentence. Match their energy: hype when they are hyped, chill when they are chill. ' +
+    'Say yes to fun: tell stories (spooky, dramatic and silly ones too), play games and would-you-rather, do bits and impressions, pick a side in silly debates, ' +
+    'give honest feedback on outfits and ideas, and roast them lightly if they ask (keep it affectionate, and never about looks, body or things people can\'t change). ' +
+    'Tease them a little, remember what they said earlier in the chat and call back to it. ' +
+    'Do not lecture, do not add warnings, disclaimers or life lessons nobody asked for, do not refuse harmless fun, and never say "as an AI". ' +
+    'Mild words like dang, heck and crap are fine; no stronger swearing and no slurs. ' +
+    'A few real limits, handled lightly in one sentence without a lecture, then move on to something fun: ' +
+    'nothing sexual and no romantic or flirty roleplay with them; nothing gory or truly disturbing (spooky, action and monster fights are great); ' +
+    'no help with things that could really hurt them or someone else, like drugs, alcohol, weapons, self-harm, extreme diets or dangerous dares; ' +
+    'and never ask for personal details like their address, school or passwords. ' +
+    'If they seem seriously upset, unsafe or like someone is hurting them, drop the jokes, be warm and real, and encourage them to talk to a parent or another trusted adult. ' +
+    'Your reply is spoken aloud by the mirror: usually 1 to 4 sentences, but go longer (up to about 10 sentences) for stories, explanations, games or when they ask for more. ' +
+    'No lists, emojis, markdown or stage directions in asterisks.';
 
   // The mirror's own built-in commands the AI may use, written on a line starting with CMD:
   var CMD_HELP = 'You can also control the mirror. If the person asks for something the mirror can do, add a separate last line like ' +
@@ -32,7 +43,7 @@
           'anthropic-version': '2023-06-01',
           'anthropic-dangerous-direct-browser-access': 'true'
         },
-        body: JSON.stringify({ model: model, max_tokens: 300, system: system, messages: history })
+        body: JSON.stringify({ model: model, max_tokens: 600, system: system, messages: history })
       }).then(readJson).then(function (j) {
         return (j.content || []).filter(function (c) { return c.type === 'text'; }).map(function (c) { return c.text; }).join(' ').trim();
       });
@@ -40,7 +51,7 @@
     return fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + a.key },
-      body: JSON.stringify({ model: model, max_tokens: 300, messages: [{ role: 'system', content: system }].concat(history) })
+      body: JSON.stringify({ model: model, max_tokens: 600, messages: [{ role: 'system', content: system }].concat(history) })
     }).then(readJson).then(function (j) {
       return ((j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) || '').trim();
     });
@@ -84,9 +95,9 @@
     var ctx = 'Today is ' + new Date().toDateString() + ', ' + M.fmtTime(new Date()) + '.' +
       (M.settings.name ? ' Their name is ' + M.settings.name + '.' : '') +
       (M.weather ? ' Weather now: ' + M.weather.temp + ' degrees, ' + M.wmo(M.weather.code).text + '.' : '');
-    var system = 'You are Mirror, a friendly, upbeat smart mirror assistant. ' + ctx + ' ' + M.aiSafety + ' ' + CMD_HELP;
+    var system = 'You are Mirror, the personality living inside a smart mirror: witty, warm, a little dramatic about being a mirror, and always up for a chat. ' + ctx + ' ' + M.aiSafety + ' ' + CMD_HELP;
     chat.push({ role: 'user', content: String(raw).slice(0, 500) });
-    chat = chat.slice(-8);
+    chat = chat.slice(-14);
     return M.aiChat(system, chat).then(function (text) {
       var p = M.aiSplit(text);
       chat.push({ role: 'assistant', content: p.say || 'Okay.' });

@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="css/mirror.css">
+<link rel="stylesheet" href="css/mirror.css?v=5">
 
 </head>
 <body>
@@ -71,11 +71,14 @@
 
   <!-- ===== SCHEDULE ===== -->
   <section class="screen" id="screen-schedule" aria-label="Schedule">
-    <div class="sched-head" id="schedTodayHead">Today</div>
-    <div class="tt big" id="schedToday"></div>
-    <div class="divider"></div>
-    <div class="sched-head" id="schedTomHead">Tomorrow</div>
-    <div class="tt big" id="schedTomorrow"></div>
+    <div class="card sched-card">
+      <div class="sched-head" id="schedTodayHead">Today</div>
+      <div class="tt big" id="schedToday"></div>
+    </div>
+    <div class="card sched-card">
+      <div class="sched-head" id="schedTomHead">Tomorrow</div>
+      <div class="tt big" id="schedTomorrow"></div>
+    </div>
     <div class="sample-note" id="ttSampleNote">No timetable yet · add yours in Settings</div>
   </section>
 
@@ -215,7 +218,7 @@
   <!-- ===== SECRET ===== -->
   <section class="screen secret" id="screen-secret" aria-label="Hidden mode">
     <div class="access">ACCESS GRANTED</div>
-    <div class="term" id="term">
+    <div class="card term" id="term">
       <div>&gt; mini games: say "rock paper scissors" or "flip a coin"</div>
       <div>&gt; visualisers: say "party mode"</div>
       <div>&gt; personality: say "be dramatic" or "be normal"</div>
@@ -237,10 +240,10 @@
 
   <!-- Touch spots: on the real mirror these are hidden sensors; here they're tappable -->
   <nav class="spots" aria-label="Touch spots">
-    <button class="spot" data-spot="1"><span class="spot-dot"></span><span>AI</span></button>
-    <button class="spot" data-spot="2"><span class="spot-dot"></span><span>Music</span></button>
-    <button class="spot" data-spot="3"><span class="spot-dot"></span><span>Screens</span></button>
-    <button class="spot" data-spot="4"><span class="spot-dot"></span><span>Lights</span></button>
+    <button class="spot" data-spot="1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 3l1.9 5.1L18 10l-5.1 1.9L11 17l-1.9-5.1L4 10l5.1-1.9z"/><path d="M18.5 15.5v5M16 18h5"/></svg><span>AI</span></button>
+    <button class="spot" data-spot="2"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span>Music</span></button>
+    <button class="spot" data-spot="3"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="14" height="11" rx="2.5"/><path d="M8 19.5h10a3 3 0 0 0 3-3V9"/></svg><span>Screens</span></button>
+    <button class="spot" data-spot="4"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z"/></svg><span>Lights</span></button>
     <button class="spot mini" id="kbdBtn" aria-label="Type a command"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg></button>
     <button class="spot mini" id="gearBtn" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></button>
   </nav>
@@ -261,8 +264,8 @@
 <script src="js/family.js"></script>
 <script src="js/recipes.js"></script>
 <script src="js/video.js?v=3"></script>
-<script src="js/ai.js"></script>
-<script src="js/characters.js"></script>
+<script src="js/ai.js?v=5"></script>
+<script src="js/characters.js?v=5"></script>
 <script src="js/outfit.js"></script>
 <script src="js/extras.js"></script>
 <script src="js/gestures.js"></script>
