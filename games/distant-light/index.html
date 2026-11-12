@@ -1,0 +1,97 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>遥かな光 Distant Light</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Maru+Gothic:wght@400;500;700&family=Yusei+Magic&family=Dela+Gothic+One&family=Cormorant+Garamond:ital,wght@0,600;1,500;1,700&family=Kiwi+Maru:wght@400;500&family=Mochiy+Pop+One&display=swap">
+<link rel="stylesheet" href="css/game.css">
+<link rel="stylesheet" href="css/minigame.css">
+<link rel="stylesheet" href="css/arcade.css">
+<link rel="stylesheet" href="css/studio.css">
+<link rel="stylesheet" href="css/studio_themes.css">
+<link rel="stylesheet" href="css/apps.css">
+
+<div id="app">
+  <div id="stage-box">
+    <div id="stage" aria-live="polite">
+      <div id="shake">
+        <div id="bg" class="layer">
+          <div class="bgimg" id="bgA"></div>
+          <div class="bgimg" id="bgB"></div>
+        </div>
+        <div id="tint" class="layer"></div>
+        <div id="sprites" class="layer"></div>
+        <canvas id="fx" class="layer" width="640" height="360"></canvas>
+        <canvas id="noise" class="layer" width="160" height="90"></canvas>
+        <div id="scan" class="layer"></div>
+        <div id="vignette" class="layer"></div>
+      </div>
+
+      <div id="catcher" class="layer" aria-hidden="true"></div>
+
+      <header id="hud" hidden>
+        <div id="hud-day"></div>
+        <nav id="quick" aria-label="Game menu">
+          <button type="button" data-q="phone" class="q-phone">📱 Phone</button>
+          <button type="button" data-q="log">Log</button>
+          <button type="button" data-q="auto">Auto</button>
+          <button type="button" data-q="skip">Skip</button>
+          <button type="button" data-q="settings">Settings</button>
+          <button type="button" data-q="title">Title</button>
+        </nav>
+      </header>
+
+      <section id="textbox" hidden>
+        <div id="namebox"></div>
+        <div id="text"></div>
+        <button type="button" id="recall" hidden>
+          <span class="recall-glyph" aria-hidden="true">↺</span>
+          <span>Remember what was really said</span>
+        </button>
+        <div id="nextind" aria-hidden="true">✦</div>
+      </section>
+
+      <div id="choices" hidden></div>
+      <div id="screens"></div>
+      <div id="toasts" aria-live="polite"></div>
+      <div id="flash" class="layer"></div>
+    </div>
+  </div>
+  <div id="rotate-hint" hidden>Turn your phone sideways for a bigger view.</div>
+</div>
+
+<script src="js/core/util.js"></script>
+<script src="js/core/state.js"></script>
+<script src="js/core/audio.js"></script>
+<script src="js/core/sprites.js"></script>
+<script src="js/core/stage.js"></script>
+<script src="js/core/fx.js"></script>
+<script src="js/core/dialogue.js"></script>
+<script src="js/core/phone.js"></script>
+<script src="js/core/screens.js"></script>
+<script src="js/core/engine.js"></script>
+<script src="js/story/dsl.js"></script>
+<script src="js/story/data.js"></script>
+<script src="js/story/week1.js"></script>
+<script src="js/story/week2.js"></script>
+<script src="js/story/events.js"></script>
+<script src="js/story/endings.js"></script>
+<script src="js/story/endings2.js"></script>
+<script src="js/story/saturday.js"></script>
+<script src="js/story/studio_scenes.js"></script>
+<script src="js/story/talks.js"></script>
+<script src="js/story/mikage.js"></script>
+<script src="js/story/extras_data.js"></script>
+<script src="js/story/extras.js"></script>
+<script src="js/story/mikage_apart.js"></script>
+<script src="js/story/mikage_feast.js"></script>
+<script src="js/story/extended.js"></script>
+<script src="js/minigame/wardrobe.js"></script>
+<script src="js/minigame/fitting.js"></script>
+<script src="js/minigame/rin_fitting.js"></script>
+<script src="js/minigame/arcade.js"></script>
+<script src="js/minigame/studio.js"></script>
+<script src="js/core/apps.js"></script>
+<script src="js/core/game.js"></script>
+
+</body></html>

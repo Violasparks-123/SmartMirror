@@ -1,0 +1,151 @@
+/* THE FITTING: Saturday dress-up minigame. Left: the twin you're styling. Right: the wardrobe. */
+.fitting { position: absolute; inset: 0; display: grid; grid-template-columns: 360px 1fr; gap: 20px; padding: 18px 22px; z-index: 11; }
+.fit-tint { position: absolute; inset: 0; pointer-events: none; transition: background .6s ease; }
+.fitting.round-haruka .fit-tint { background: linear-gradient(110deg, rgba(255, 170, 205, .55), rgba(60, 25, 50, .55)); }
+.fitting.round-hikaru .fit-tint { background: linear-gradient(110deg, rgba(160, 205, 245, .55), rgba(25, 30, 60, .6)); }
+.fitting.round-doll .fit-tint { background: linear-gradient(110deg, rgba(255, 90, 160, .65), rgba(40, 5, 25, .8)); }
+
+.fit-model, .fit-main { position: relative; min-width: 0; }
+.fit-model { display: flex; flex-direction: column; gap: 10px; }
+.fit-brief { background: var(--glass-strong); border-radius: 18px; padding: 12px 16px; font-size: 15px; line-height: 1.45; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 8px 22px rgba(20, 10, 30, .25); }
+.fit-brief b { font-family: var(--f-display); font-size: 17px; letter-spacing: .04em; }
+.round-haruka .fit-brief b, .round-doll .fit-brief b { color: var(--pink-deep); }
+.round-hikaru .fit-brief b { color: var(--blue-deep); }
+.fit-brief em { font-style: normal; font-weight: 700; color: var(--pink-deep); }
+
+.fit-portrait { position: relative; flex: 1; min-height: 0; }
+.fit-figure { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; }
+.fit-figure img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 14px 24px rgba(20, 10, 30, .4)); }
+.fit-silhouette { width: 240px; height: 360px; fill: #2a1424; transition: fill .6s ease; filter: drop-shadow(0 0 18px rgba(255, 80, 150, .7)); animation: moodBreathe 2.4s ease-in-out infinite; }
+.fit-bubble { position: absolute; left: 6px; right: 6px; top: 4px; background: #fff; border-radius: 18px; padding: 10px 14px 11px; font-size: 16px; line-height: 1.45; box-shadow: 0 10px 24px rgba(20, 10, 30, .3); z-index: 2; }
+.fit-bubble::after { content: ""; position: absolute; left: 50%; bottom: -9px; width: 18px; height: 18px; background: inherit; transform: translateX(-50%) rotate(45deg); border-radius: 3px; }
+.fit-bubble b { display: block; font-family: var(--f-display); font-size: 14px; letter-spacing: .06em; }
+.fit-bubble.from-haruka b { color: var(--pink-deep); } .fit-bubble.from-hikaru b { color: var(--blue-deep); }
+.fit-bubble em { font-style: normal; font-weight: 700; }
+.fitting.round-doll .fit-bubble { background: #2a1424; color: #ffc4da; font-family: var(--f-mono); }
+
+.fit-meter-row { display: flex; justify-content: space-between; align-items: center; background: var(--glass); border-radius: 999px; padding: 6px 14px; font-size: 14px; font-weight: 700; color: var(--ink-soft); }
+.fit-meter i { font-style: normal; font-size: 18px; color: rgba(120, 100, 140, .28); margin-left: 2px; }
+.round-haruka .fit-meter i.on, .round-doll .fit-meter i.on, .mirror-card.haruka .fit-meter i.on, .mini-meter i.on { color: var(--pink-deep); }
+.round-hikaru .fit-meter i.on, .mirror-card.hikaru .fit-meter i.on { color: var(--blue-deep); }
+
+.fit-slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.fit-slot { position: relative; display: flex; flex-direction: column; gap: 4px; align-items: center; min-width: 0; }
+.fit-slot-btn { width: 100%; aspect-ratio: 1; border-radius: 14px; border: 2px dashed rgba(255, 255, 255, .8); background: rgba(255, 255, 255, .35); padding: 0; overflow: hidden; display: grid; place-items: center; }
+.fit-slot.filled .fit-slot-btn { border-style: solid; background: #fff; }
+.fit-slot-btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fit-slot-btn .ph { font-family: var(--f-display); font-weight: 700; color: rgba(255, 255, 255, .95); font-size: 15px; text-shadow: 0 1px 4px rgba(20, 10, 30, .5); }
+.fit-slot-name { font-size: 12px; font-weight: 700; color: var(--paper); text-shadow: 0 1px 4px rgba(20, 10, 30, .7); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.fit-slot.swapped .fit-slot-btn { border-color: #ff6fa5; box-shadow: 0 0 0 3px rgba(255, 90, 150, .5), 0 0 16px rgba(255, 60, 140, .7); animation: swapPulse 1s steps(2) infinite; }
+.fit-slot.swapped .fit-slot-btn img { filter: saturate(1.4) hue-rotate(-12deg); }
+@keyframes swapPulse { 50% { transform: translateX(-2px); filter: hue-rotate(40deg); } }
+.fit-undo { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); white-space: nowrap; border: 0; border-radius: 999px; padding: 5px 10px; font-size: 12px; font-weight: 700; background: linear-gradient(135deg, #e9f5ff, var(--blue)); color: #1e3f66; box-shadow: 0 4px 12px rgba(20, 40, 80, .35); animation: recallPulse 1.6s ease-out infinite; z-index: 2; }
+
+.fit-main { display: flex; flex-direction: column; gap: 12px; }
+.fit-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.fit-head h2 { margin: 0; font-family: var(--f-display); font-weight: 800; font-size: 30px; color: var(--paper); letter-spacing: .04em; text-shadow: 0 2px 12px rgba(20, 10, 30, .6); }
+.fit-head h2 small { font-size: 15px; margin-left: 10px; color: var(--cream); font-weight: 700; letter-spacing: .1em; }
+.fit-clock { font-size: 15px; font-weight: 700; color: var(--ink); background: var(--glass-strong); padding: 8px 16px; border-radius: 999px; font-variant-numeric: tabular-nums; box-shadow: 0 6px 16px rgba(20, 10, 30, .25); }
+.fit-clock b { font-family: var(--f-mono); font-size: 18px; margin-left: 4px; }
+.fit-clock.urgent { background: #2a1424; color: #ffc4da; animation: clockPulse 1s ease-in-out infinite; }
+@keyframes clockPulse { 50% { box-shadow: 0 0 0 6px rgba(255, 80, 150, .35); } }
+
+.fit-tabs { display: flex; gap: 8px; }
+.fit-tab { flex: 1; border: 1.5px solid rgba(255, 255, 255, .85); border-radius: 14px; background: var(--glass); padding: 8px 10px; font-family: var(--f-display); font-weight: 800; font-size: 17px; display: flex; gap: 8px; align-items: baseline; justify-content: center; min-height: 44px; }
+.fit-tab small { font-size: 12px; color: var(--ink-soft); font-weight: 700; }
+.fit-tab.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.fit-tab.on small { color: var(--cream); }
+.fit-tab.done::after { content: "✓"; font-family: var(--f-body); font-size: 14px; color: var(--pink-deep); }
+.round-hikaru .fit-tab.done::after { color: var(--blue-deep); }
+.fit-tab.on.done::after { color: var(--cream); }
+
+.fit-grid { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; overflow-y: auto; align-content: start; padding: 4px 4px 4px 0; }
+.fit-card { position: relative; border: 0; padding: 0; border-radius: 18px; background: var(--glass-strong); overflow: hidden; display: flex; flex-direction: column; text-align: left; box-shadow: 0 8px 20px rgba(20, 10, 30, .25); transition: transform .18s var(--ease), box-shadow .18s; }
+.fit-card:hover { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(20, 10, 30, .35); }
+.fit-card .img { display: block; height: 168px; background: #fff; }
+.fit-grid.cat-look .fit-card .img { height: 300px; }
+.fit-card .img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fit-grid.cat-look .fit-card .img img { object-fit: contain; }
+.fit-card .name { font-family: var(--f-display); font-weight: 800; font-size: 16px; padding: 8px 12px 0; }
+.fit-card .desc { font-size: 12px; line-height: 1.35; color: var(--ink-soft); padding: 2px 12px 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.fit-card.on { box-shadow: 0 0 0 4px var(--pink-deep), 0 12px 26px rgba(20, 10, 30, .35); }
+.round-hikaru .fit-card.on { box-shadow: 0 0 0 4px var(--blue-deep), 0 12px 26px rgba(20, 10, 30, .35); }
+.fit-card .tag-on { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--pink-deep); color: #fff; font-weight: 700; }
+.round-hikaru .fit-card .tag-on { background: var(--blue-deep); }
+.fit-card .tag-hers { position: absolute; top: 8px; left: 8px; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: #ffd3e3; color: #7a2346; }
+
+.fit-foot { display: flex; justify-content: space-between; align-items: center; gap: 14px; background: var(--glass); border-radius: 18px; padding: 8px 10px 8px 14px; min-height: 62px; }
+.fit-other { display: flex; align-items: center; gap: 8px; font-size: 13px; min-width: 0; flex-wrap: wrap; }
+.fit-other .lbl { font-weight: 700; color: var(--pink-deep); letter-spacing: .04em; }
+.fit-other .tipline { color: var(--ink-soft); }
+.fit-other img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; border: 2px solid #fff; }
+.fit-other img.match { border-color: var(--pink-deep); box-shadow: 0 0 0 2px rgba(201, 86, 127, .35); }
+.fit-other .matches { font-weight: 700; color: var(--ink-soft); }
+.fit-other .matches.good { color: #2d6a45; } .fit-other .matches.bad { color: var(--system); }
+.fit-other .mini-meter { font-weight: 700; color: var(--ink-soft); }
+.fit-other .mini-meter i { font-style: normal; color: rgba(120, 100, 140, .28); }
+.fit-done { flex: none; }
+
+/* The mirror */
+.mirror { position: absolute; inset: 0; z-index: 11; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 22px; background: radial-gradient(120% 90% at 50% 40%, rgba(255, 245, 250, .3), rgba(30, 15, 40, .75)); }
+.mirror h2 { margin: 0; font-family: var(--f-display); font-weight: 800; font-size: 32px; color: var(--paper); letter-spacing: .06em; text-shadow: 0 2px 12px rgba(20, 10, 30, .6); }
+.mirror h2 small { font-size: 18px; margin-left: 8px; color: var(--cream); }
+.mirror-pair { display: grid; grid-template-columns: 1fr 120px 1fr; gap: 16px; width: 100%; flex: 1; min-height: 0; }
+.mirror-card { margin: 0; background: var(--glass-strong); border-radius: 24px; padding: 12px 14px; display: grid; grid-template-columns: 1fr 120px; grid-template-rows: 1fr auto; gap: 8px 12px; min-height: 0; box-shadow: 0 16px 36px rgba(20, 10, 30, .35); }
+.mirror-card.haruka { border: 3px solid #ffc4da; } .mirror-card.hikaru { border: 3px solid #bcdcf6; }
+.mirror-fig { min-height: 0; display: flex; align-items: flex-end; justify-content: center; }
+.mirror-fig img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.mirror-items { display: flex; flex-direction: column; gap: 6px; }
+.mirror-items span { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+.mirror-items img { width: 64px; height: 64px; object-fit: cover; border-radius: 12px; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(20, 10, 30, .2); }
+.mirror-items span.match img { border-color: var(--pink-deep); }
+.mirror-items small { font-size: 11px; font-weight: 700; color: var(--ink-soft); text-align: center; line-height: 1.2; }
+.mirror-card figcaption { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 4px; align-items: center; text-align: center; }
+.mirror-card q { font-size: 16px; line-height: 1.4; quotes: "“" "”"; }
+.mirror-card q em { font-style: normal; font-weight: 700; }
+.mirror-card.bad q { color: var(--system); font-weight: 700; }
+.mirror-mid { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--paper); text-shadow: 0 2px 8px rgba(20, 10, 30, .6); font-weight: 700; }
+.mirror-mid b { font-family: var(--f-display); font-size: 64px; line-height: 1; }
+.mirror-mid span { font-size: 14px; letter-spacing: .08em; text-transform: uppercase; }
+.mirror.cracked::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(62deg, transparent 49.6%, rgba(255, 255, 255, .85) 50%, transparent 50.4%),
+    linear-gradient(-38deg, transparent 49.7%, rgba(255, 255, 255, .7) 50%, transparent 50.3%),
+    linear-gradient(12deg, transparent 49.8%, rgba(255, 255, 255, .6) 50%, transparent 50.2%),
+    radial-gradient(circle at 50% 45%, rgba(255, 60, 140, .25), transparent 40%);
+  animation: crack .5s steps(3) forwards; }
+@keyframes crack { from { opacity: 0; } to { opacity: 1; } }
+.mirror.fail .mirror-card { filter: saturate(.85); }
+
+/* Rin's makeover (js/minigame/rin_fitting.js) */
+.fitting.round-rin .fit-tint { background: linear-gradient(110deg, rgba(205, 185, 240, .6), rgba(45, 25, 70, .62)); }
+.round-rin .fit-brief b { color: var(--lav-deep); }
+.round-rin .fit-meter i.on, .mirror-card.rin .fit-meter i.on { color: var(--lav-deep); }
+.round-rin .fit-card.on { box-shadow: 0 0 0 4px var(--lav-deep), 0 12px 26px rgba(20, 10, 30, .35); }
+.round-rin .fit-card .tag-on { background: var(--lav-deep); }
+.round-rin .fit-tab.done::after { color: var(--lav-deep); }
+.round-rin .fit-meter-row + .fit-meter-row { margin-top: -4px; }
+.fit-bubble.from-rin b { color: var(--lav-deep); }
+.fit-bubble.from-mirror { background: #2a1424; color: #ffd6e6; } .fit-bubble.from-mirror b { color: #ff9cc4; }
+.rin-mirror { position: absolute; right: 2px; bottom: 30px; z-index: 1; width: 82px; height: 108px; border-radius: 41px 41px 10px 10px; border: 5px solid #e6cfa0; overflow: hidden; background: linear-gradient(160deg, #f8fbff, #dfe8f5); box-shadow: 0 8px 18px rgba(20, 10, 30, .35); }
+.rin-mirror img { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); opacity: .6; filter: saturate(.6); }
+.rin-mirror.haunt { border-color: var(--system); animation: moodShake .35s 4; } .rin-mirror.haunt img { opacity: 1; filter: none; }
+.round-rin .fit-other .warn { color: var(--system); }
+.round-rin-doom .fit-figure { transition: filter 1s ease; }
+.round-rin-doom .fit-figure { position: absolute; }
+.round-rin-doom .doom-tint { position: absolute; inset: 0; opacity: 0; pointer-events: none; background: #ff5fa0; mix-blend-mode: color; transition: opacity 1s ease;
+  -webkit-mask: url('../assets/sprites/rin.webp') center bottom / contain no-repeat; mask: url('../assets/sprites/rin.webp') center bottom / contain no-repeat; }
+.round-rin-doom .fit-portrait.framed::after { content: ''; position: absolute; inset: 6% 8% 0; border: 14px solid #c9a24a; border-image: linear-gradient(135deg, #f6e1a0, #b0802c, #f6e1a0, #8a5f1c) 1; box-shadow: inset 0 0 40px rgba(0,0,0,.35); animation: frameIn .8s ease; }
+@keyframes frameIn { from { transform: scale(1.3); opacity: 0; } }
+.mirror-pair.solo { grid-template-columns: minmax(0, 620px); justify-content: center; }
+.mirror-card.rin { border: 3px solid #d8c8f2; }
+.mirror-card.rin .mirror-fig { position: relative; }
+.mirror-ghost { position: absolute; bottom: 0; left: 50%; transform: translateX(-30%); max-height: 100%; opacity: .35; mix-blend-mode: multiply; filter: saturate(1.4); }
+.mirror-card.rin figcaption .fit-meter { font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+/* the swapped mirror */
+.mirror.swapped { background: radial-gradient(120% 90% at 50% 40%, rgba(230, 220, 255, .35), rgba(30, 15, 40, .75)); }
+.mirror.swapped .mirror-card.haruka { border-color: #bcdcf6; } .mirror.swapped .mirror-card.hikaru { border-color: #ffc4da; }
+.swapped-card .mirror-fig { position: relative; }
+.swapped-card .mirror-ghost { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%) scaleX(-1); opacity: .22; filter: blur(.5px); pointer-events: none; }
+.mirror.swapped .mirror-mid b { font-size: 72px; animation: swapSpin 3s ease-in-out infinite; }
+@keyframes swapSpin { 50% { transform: scaleX(-1); } }

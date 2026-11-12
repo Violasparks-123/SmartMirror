@@ -15,7 +15,13 @@
       next: '[data-act="dlg-next"]', choices: '.vn-choice' },
     { id: 'astoria', title: 'Astoria: The Moonlit Veil', alias: ['astoria', 'the moonlit veil', 'moonlit veil', 'a story a'],
       url: 'games/astoria/index.html', cover: 'games/astoria/assets/img/gala_hero.jpg',
-      next: '.dlg-box', choices: '.choice-btn:not(.locked)' }
+      next: '.dlg-box', choices: '.choice-btn:not(.locked)' },
+    { id: 'moonlit-manor', title: 'Moonlit Manor', alias: ['moonlit manor', 'manor', 'moonlit', 'moon lit manor'],
+      url: 'games/moonlit-manor/index.html', cover: 'games/moonlit-manor/assets/castle-poster.webp',
+      next: '#dlgNext', choices: '#dlgChoices .choice' },
+    { id: 'distant-light', title: 'Distant Light', alias: ['distant light', 'distant', 'the distant light', 'harukana hikari'],
+      url: 'games/distant-light/index.html', cover: 'games/distant-light/assets/bg/rooftop.webp',
+      next: '#text', choices: '#choices .choice:not(.locked)' }
   ];
   M.games = GAMES;
   var sel = 0, current = null, numbered = [], badgeTimer = null;

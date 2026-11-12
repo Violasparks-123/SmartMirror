@@ -1,0 +1,165 @@
+/* THE THREE ENDINGS, plus what happens if you press “Stay” after the bad one. */
+(() => {
+  const { scene, bg, show, hide, hideAll, n, H, K, R, me, V, add, iff, sfx, music, fx, js, card, ending, has } = DL.DSL;
+
+  /* ---------- Distant Light (good) ---------- */
+  scene('end_good', [
+    me('Haruka. She never wanted to be mean. Neither did you. I can prove it.'),
+    H('cold', 'With what? There’s nothing left of her.'),
+    me('There’s what she said. The real version. I remembered it.'),
+    music('sweet'),
+    fx('level', { level: 1, noAmbient: true }),
+    show('hikaru', 'sad', 'right', { ghost: true }),
+    iff(has('f_clip'), [K('sad', '“I want *you* to think I’m the nice one.”')]),
+    iff(has('f_rin'), [K('sad', '“Rin… I’m sorry. About the poster. About all of it.”')]),
+    iff(has('f_cafe'), [K('worried', '“Please don’t. She hasn’t done anything to you.”')]),
+    iff(has('f_roof'), [K('sad', '“I hate it. I hate who I am when we’re like that.”')]),
+    iff(has('f_vend'), [K('worried', '“I don’t want to be like this anymore. I want us to be like before.”')]),
+    iff(has('f_thanks'), [K('soft', '“Thank you. For being there.”')]),
+    iff(has('f_ribbon'), [K('soft', '“If she can’t see me anymore, will you?”')]),
+    iff(has('f_platform'), [K('soft', '“Tell her I’m still at the end of the platform. Tell her I never left.”')]),
+    iff(has('f_phone'), [K('sad', '“Please don’t forget me.”')]),
+    iff(has('f_matsuri'), [K('soft', '“Thank you for letting me be blue.”')]),
+    iff(has('f_lights'), [K('soft', '“The blue ones are the ones that come back.”')]),
+    iff(has('f_sketch'), [K('shy', '“I drew these to help her find her way home.”')]),
+    iff(has('f_pocket'), [K('neutral', '“I only said the mean thing so they’d look at me and not at her.”')]),
+    iff(has('f_doll'), [K('soft', '“If we ever stop matching, I’ll still know which one is you.”')]),
+    iff(has('f_piano'), [K('soft', '“She used to turn the pages for me. She never once got bored.”')]),
+    iff(has('f_shrine'), [K('soft', '“Please let my sister be happy, even if it’s without me.”')]),
+    iff(has('f_film'), [K('shy', '“Haruka, age eleven. The bravest person I know.”')]),
+    iff(has('f_room'), [K('sad', '“I was only mean that one time, to protect her. She thought I loved it, so she became mean too, for me. And I stayed mean for her.”')]),
+    fx('flash', { color: '#e3f2ff', ms: 320 }),
+    fx('level', { level: 0 }),
+    fx('tint', { kind: null }),
+    bg('classroom_dusk', { clean: true, force: true }),
+    show('hikaru', 'cry', 'right'),
+    H('surprised', '…Hikaru?'),
+    K('cry', 'Hi. I’ve been here the whole time. You just stopped looking.'),
+    H('cry', 'You were being mean… for *me*?'),
+    K('sad', 'You were being mean for *me*.'),
+    H('cry', 'I thought if you didn’t need me to be mean with you, you wouldn’t need me at all.'),
+    K('soft', 'I always need you. You’re my sister. You’re older by four minutes. You never let me forget it.'),
+    H('happy', '…We’re so *stupid*.'),
+    K('happy', 'We’re very stupid.'),
+    n('They’re laughing and crying at the same time. You look out of the window to give them a minute.'),
+    n('Far away, a train is pulling into Sakuragaoka Station. Its light doesn’t flicker at all.'),
+    hideAll(),
+    fx('fade', { color: '#ffffff', to: 1, ms: 900 }),
+    bg('station', { clean: true, fade: 10 }),
+    fx('fade', { color: '#ffffff', to: 0, ms: 1200 }),
+    n('One week later.'),
+    show('haruka', 'smile', 'left', { acc: 'clip' }),
+    show('hikaru', 'soft', 'right'),
+    show('rin', 'happy', 'center'),
+    R('happy', 'Okay, closer together. And no mean face.'),
+    H('smirk', 'This *is* my face.'),
+    K('smile', 'It is her face.'),
+    n('Haruka is wearing a pink star clip in her hair. She keeps touching it when she thinks nobody’s looking.'),
+    n('On Monday the twins apologised to Rin, properly, in front of the whole class. Rin made them model for the exhibition as payment.'),
+    R('smile', 'Three, two, one—'),
+    sfx('coin'),
+    fx('flash', { color: '#ffffff', ms: 160 }),
+    K('soft', '{name}. Thank you for remembering me.'),
+    H('shy', '…Yeah. What she said. Don’t make it weird.'),
+    K('soft', 'If you ever get lost, look for the light.'),
+    H('smile', 'We’ll be there. Both of us.'),
+    ending('good'),
+  ]);
+
+  /* ---------- Same Smile (bad) ---------- */
+  scene('end_bad', [
+    me('You’re right. She always liked being mean.'),
+    H('eerie', 'I *knew* it. I knew you’d understand.'),
+    hide('hikaru', { erase: true }),
+    fx('tear', { ms: 600, strength: 1.4 }),
+    bg('sisters_room', { variant: 'g2' }),
+    fx('tint', { kind: 'erase' }),
+    n('The room is pink now. All of it. The blue side is gone, like it was never painted.'),
+    n('No bookshelf. No beanbag. No sketches. There was never a sketchbook, and never anyone to draw in it.'),
+    show('haruka', 'smile', 'center'),
+    H('smile', 'See? Much nicer. Much simpler.'),
+    H('eerie', 'It’s just us now. Me and you.'),
+    V('Don’t worry about closing the game, {name}. I’ll still be here. I’ll keep the light on for you.'),
+    V('It’s {time} where you are. Stay a little longer?'),
+    ending('bad'),
+  ]);
+
+  /* ---------- Sugarcoat (neutral) ---------- */
+  scene('end_neutral', [
+    me('This isn’t my story.'),
+    H('surprised', '…What?'),
+    n('You pick up your bag and walk out. Behind you, Haruka says your name once, very quietly.'),
+    hideAll(),
+    bg('hallway', { variant: 'g1' }),
+    n('The hallway is longer than it should be.'),
+    fx('tear', { ms: 500 }),
+    bg('gate', { variant: 'g1' }),
+    n('You reach the gate. The cherry trees are full again, like it’s the first week of April.'),
+    card('[[it starts over sweet]]', { num: 'Day 1', jp: '月曜日　4月13日', en: 'Monday' }),
+    show('haruka', 'smirk', 'left'),
+    H('smirk', 'Oh? A new one.'),
+    n('There’s nobody standing next to her.'),
+    H('smile', '…Again?'),
+    ending('neutral'),
+  ]);
+
+  /* ---------- Through the Lens (Rin's photo) ---------- */
+  scene('end_rin', [
+    me('Haruka. Look at this. Rin took it at Tanabata, when you were eleven.'),
+    show('rin', 'worried', 'center'),
+    R('worried', 'I wrote her name on the back. Hikaru. I didn’t want to forget it.'),
+    H('cold', 'It’s a smudge.'),
+    R('neutral', 'It isn’t. Look at whose sleeve you’re holding.'),
+    H('surprised', '…'),
+    fx('flash', { color: '#e3f2ff', ms: 260 }),
+    show('hikaru', 'sad', 'right', { ghost: true }),
+    H('cry', 'I was holding her sleeve. I always held her sleeve.'),
+    K('soft', 'You still can, if you want.'),
+    n('She’s barely there. A pale outline in the evening light. But Haruka can see her, and so can Rin.'),
+    R('smile', 'I’ll keep taking pictures. Every day. Until she’s all the way back.'),
+    ending('rin'),
+  ]);
+
+  /* ---------- Older by Four Minutes (stay with Haruka) ---------- */
+  scene('end_haruka', [
+    me('Then I’ll stay. With you. Not with the version of you that’s copying her. With *you*.'),
+    H('surprised', 'Me?'),
+    H('worried', 'I don’t even know who that is.'),
+    me('You told me. Someone who’s never been without her. So let’s find out.'),
+    H('cry', 'If I stop being mean… there’s nothing left of me.'),
+    me('There’s a girl who hid behind her sister at the station. Start there.'),
+    music('uneasy'),
+    n('Haruka looks at the window seat for a long time. Then she looks away, on purpose.'),
+    H('sad', 'Okay. One of us, then. I’ll be enough.'),
+    fx('tint', { kind: null }),
+    ending('haruka'),
+  ]);
+
+  /* ---------- The Blue Side (go with Hikaru) ---------- */
+  scene('end_hikaru', [
+    n('Behind Haruka, at the edge of the window, a pale blue outline is holding out her hand.'),
+    show('hikaru', 'soft', 'right', { ghost: true }),
+    K('soft', 'You didn’t remember enough to bring me back. That’s okay.'),
+    K('worried', 'But you could come with me instead.'),
+    H('angry', 'Who are you talking to? {name}. Look at *me*.'),
+    me('I’m sorry, Haruka.'),
+    fx('tear', { ms: 600 }),
+    hide('haruka', { erase: true }),
+    fx('tint', { kind: null }),
+    bg('station', { variant: 'g1' }),
+    K('smile', 'It’s quiet here. Look. You can see the trains coming from really far away.'),
+    ending('hikaru'),
+  ]);
+
+  /* ---------- After the bad ending: the title’s “Stay” button ---------- */
+  scene('title_stay', [
+    js(() => { DL.FX.applyLevel(3, { noAmbient: true }); DL.Audio.setMood('drone'); }),
+    bg('sisters_room', { variant: 'g1' }),
+    fx('tint', { kind: 'erase' }),
+    show('haruka', 'happy', 'center'),
+    H('happy', 'You stayed! I knew you would.'),
+    V('There’s nothing else to do here, you know. There’s only me. That’s the point.'),
+    H('smile', 'But you can start over if you want. I’ll be at the gate. I’m always at the gate.'),
+    hide('haruka'),
+  ]);
+})();
