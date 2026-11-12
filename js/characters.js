@@ -87,7 +87,7 @@
 
   function start(c) {
     active = c; history = [];
-    M.voiceTweak = { pitch: c.pitch, rate: c.rate };
+    M.voiceTweak = { pitch: c.pitch, rate: c.rate, voice: c.voice, name: c.name, from: c.from, who: c.who };
     M.setLights({ color: c.color, mode: 'solid', on: true });
     M.show('assistant'); M.clearChat();
     M.orb('', 'Talking to ' + c.name + ' · say "bye" to stop');
@@ -130,7 +130,7 @@
       'You can describe what you do or what is happening around you in a short plain sentence of narration. ' +
       'Never comment on the roleplay, never summarise it, never offer to "continue the story", and never go soft, careful or therapist-like because the story got dark or sad; stay in it. ' +
       'Only step out of character if they sincerely ask whether you are real (then say you are an AI playing ' + c.name + ' for fun, and offer to carry on). ' +
-      'They are a teenager, so keep it the kind of story that could be in the show or the books. ' + M.aiLimits + ' ' +
+      'They are a teenager: go on real adventures with them, as dark, scary and bloody as a teen horror or action novel can be, but with zero romance. ' + M.aiLimits + ' ' +
       'Mild words like dang, heck and crap are fine; no stronger swearing. Usually reply in 2 to 6 sentences. ' + M.aiSpoken + ' ' + M.aiCmdHelp;
     history.push({ role: 'user', content: String(raw).slice(0, 800) });
     history = history.slice(-24);

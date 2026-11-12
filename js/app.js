@@ -97,6 +97,9 @@
     $('setWake').checked = !!S.wake;
     $('setGestures').checked = !!S.gestures;
     $('setPair').value = S.pairing;
+    $('setTts').checked = S.ttsOn !== false;
+    var tv = $('setTtsVoice'); tv.innerHTML = '';
+    M.ttsVoices.forEach(function (v) { var o = document.createElement('option'); o.value = v; o.textContent = v.charAt(0).toUpperCase() + v.slice(1) + (v === 'marin' || v === 'cedar' ? ' (most natural)' : ''); if (v === (S.ttsVoice || 'marin')) o.selected = true; tv.appendChild(o); });
     var sel = $('setVoice'); sel.innerHTML = '';
     var auto = document.createElement('option'); auto.value = ''; auto.textContent = 'Best available'; sel.appendChild(auto);
     M.voices.forEach(function (v) { var o = document.createElement('option'); o.value = v.voiceURI; o.textContent = v.name + ' (' + v.lang + ')'; if (v.voiceURI === S.voiceURI) o.selected = true; sel.appendChild(o); });
@@ -130,6 +133,8 @@
         .catch(function () { $('cityStatus').textContent = 'Couldn\'t look that up here. It will work once the mirror is online.'; });
     };
     $('setVoice').onchange = function (e) { S.voiceURI = e.target.value; M.save(); };
+    $('setTts').onchange = function (e) { S.ttsOn = e.target.checked; M.save(); };
+    $('setTtsVoice').onchange = function (e) { S.ttsVoice = e.target.value; M.save(); M.speak('Hi! I\'m ' + e.target.value + '. This is how I sound now.'); };
     $('voiceTest').onclick = function () { M.speak('Hi! This is how I sound. It\'s ' + M.fmtTime(new Date()) + '.'); };
     $('setWake').onchange = function (e) { S.wake = e.target.checked; M.save(); if (S.wake) M.startWake(); else M.stopAllListening(); };
     $('setGestures').onchange = function (e) { S.gestures = e.target.checked; M.save(); if (S.gestures) M.startGestures(); else M.stopGestures(); };

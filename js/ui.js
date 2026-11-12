@@ -50,7 +50,7 @@
     m.setAttribute('data-theme-name', M.settings.theme);
     m.classList.toggle('mirror-mode', !!M.settings.mirrorMode);
     // Liquid Glass or the classic look: swap the style sheet
-    var skin = $('skin'), want = (M.settings.liquidGlass === false ? 'css/classic.css' : 'css/mirror.css') + '?v=6';
+    var skin = $('skin'), want = (M.settings.liquidGlass === false ? 'css/classic.css' : 'css/mirror.css') + '?v=7';
     if (skin && skin.getAttribute('href') !== want) skin.setAttribute('href', want);
   };
 

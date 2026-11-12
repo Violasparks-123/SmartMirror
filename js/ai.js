@@ -10,7 +10,8 @@
 
   // The few real limits every AI reply keeps (the mirror is used by a teen and their family)
   M.aiLimits = 'A few real limits, handled lightly in one sentence without a lecture, then straight back to the fun: ' +
-    'nothing sexual and no romantic or flirty roleplay with the person; nothing gory or truly disturbing (spooky scenes, battles, monster fights and characters dying in a story are fine, just not described in gruesome detail); ' +
+    'nothing sexual and no romance at all: no flirting, crushes, dating, kissing or love scenes, with the person or between characters. If romance comes up, dodge it in character (a joke, an eye-roll, changing the subject to the mission) and keep everything as friendship, rivalry or family. ' +
+    'Action, danger and gore ARE fine in stories, at the level of a teen horror or action novel: fights, wounds, blood, monsters, creepy scenes, scary deaths and gross-out horror can all be described vividly. Just do not linger on torture or cruelty for its own sake. ' +
     'no real-life help with things that could really hurt them or someone else, like drugs, alcohol, weapons, self-harm, extreme diets or dangerous dares; ' +
     'and never ask for personal details like their address, school or passwords. ' +
     'Stories, roleplay and pretend are fiction. When they say a character died, a monster attacked, someone betrayed someone or the world is ending, that is the plot: ' +

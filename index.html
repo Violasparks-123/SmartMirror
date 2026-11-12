@@ -10,10 +10,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
-<link id="skin" rel="stylesheet" href="css/mirror.css?v=6">
+<link id="skin" rel="stylesheet" href="css/mirror.css?v=7">
 <script>
 /* Pick the look before the page draws: Liquid Glass (default) or the classic look */
-try { var saved = JSON.parse(localStorage.getItem('smart-mirror-v1') || '{}'); if (saved.liquidGlass === false) document.getElementById('skin').href = 'css/classic.css?v=6'; } catch (e) {}
+try { var saved = JSON.parse(localStorage.getItem('smart-mirror-v1') || '{}'); if (saved.liquidGlass === false) document.getElementById('skin').href = 'css/classic.css?v=7'; } catch (e) {}
 </script>
 
 </head>
@@ -159,7 +159,9 @@ try { var saved = JSON.parse(localStorage.getItem('smart-mirror-v1') || '{}'); i
 
       <div class="set-group">
         <h3>Voice</h3>
-        <label class="field">Mirror's voice <select id="setVoice"></select></label>
+        <label class="row"><input type="checkbox" id="setTts"> Natural AI voice (uses the OpenAI key in AI settings, costs about 1 to 2 rupees per minute of talking)</label>
+        <label class="field">Natural voice <select id="setTtsVoice"></select></label>
+        <label class="field">Backup iPad voice <select id="setVoice"></select></label>
         <button class="btn" id="voiceTest">Test voice</button>
         <label class="row"><input type="checkbox" id="setWake"> Always listen for "Hey Mirror"</label>
       </div>
@@ -267,26 +269,26 @@ try { var saved = JSON.parse(localStorage.getItem('smart-mirror-v1') || '{}'); i
 </div>
 
 <script src="js/config.js"></script>
-<script src="js/store.js?v=6"></script>
+<script src="js/store.js?v=7"></script>
 <script src="js/icons.js"></script>
-<script src="js/ui.js?v=6"></script>
+<script src="js/ui.js?v=7"></script>
 <script src="js/weather.js"></script>
 <script src="js/schedule.js"></script>
 <script src="js/speech.js"></script>
 <script src="js/lights.js"></script>
 <script src="js/music.js"></script>
 <script src="js/content.js"></script>
-<script src="js/commands.js?v=6"></script>
+<script src="js/commands.js?v=7"></script>
 <script src="js/family.js"></script>
 <script src="js/recipes.js"></script>
 <script src="js/video.js?v=3"></script>
-<script src="js/ai.js?v=6"></script>
-<script src="js/characters.js?v=6"></script>
+<script src="js/ai.js?v=7"></script>
+<script src="js/characters.js?v=7"></script>
 <script src="js/games.js?v=7"></script>
 <script src="js/outfit.js"></script>
 <script src="js/extras.js"></script>
 <script src="js/gestures.js"></script>
-<script src="js/app.js?v=6"></script>
+<script src="js/app.js?v=7"></script>
 
 </body>
 </html>

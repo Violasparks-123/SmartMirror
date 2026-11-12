@@ -135,7 +135,7 @@
 
   /* --- Follow-ups and cancel --- */
   add(['^(cancel|never ?mind|stop listening|forget it|nothing)$'], function () { pending = null; M.cancelListening(); return M.say('Okay.', { silent: true }); });
-  add(['^(stop|shut up|be quiet|quiet|stop talking|silence|hush)$'], function () { if (window.speechSynthesis) speechSynthesis.cancel(); if (M.isPlaying()) M.musicPause(); M.orb('', 'Okay'); return true; });
+  add(['^(stop|shut up|be quiet|quiet|stop talking|silence|hush)$'], function () { M.stopSpeaking(); if (M.isPlaying()) M.musicPause(); M.orb('', 'Okay'); return true; });
 
   /* --- Wake / sleep --- */
   add(['^(wake up|wakey wakey|wake|turn on( the)? screen|screen on|i\'m back|im back)$'], function () { M.wake(); return M.say('I\'m awake. ' + summary()); });
@@ -371,7 +371,22 @@
     return M.say(on ? 'Liquid Glass look is on.' : 'Back to the classic look.');
   });
   add(['mirror mode (on|off)', '(turn|switch) (on|off) mirror mode'], function (m, t) { M.settings.mirrorMode = /\bon\b/.test(t); M.save(); M.applyTheme(); return M.say('Mirror mode ' + (M.settings.mirrorMode ? 'on.' : 'off.')); });
+  add(['^(natural|ai|realistic|real|human|nice) voice (on|off)$', '^(turn|switch) (on|off) (the )?(natural|ai|realistic) voice$', '^(robot|ipad|old|built ?in) voice$'], function (m, t) {
+    M.settings.ttsOn = /\bon\b/.test(t) && !/robot|ipad|old|built/.test(t); M.save();
+    if (M.settings.ttsOn && !M.naturalVoiceReady()) return M.say('The natural voice needs the OpenAI key in Settings, then AI.');
+    return M.say(M.settings.ttsOn ? 'Natural voice on. Much better, right?' : 'Okay, back to the iPad voice.', { plain: true });
+  });
+  add(['^(use|switch to|change to|try) (the )?(voice )?(marin|cedar|coral|nova|shimmer|sage|alloy|ballad|verse|ash|echo|fable|onyx)( voice)?$'], function (m, t) {
+    var v = M.ttsVoices.filter(function (x) { return new RegExp('\\b' + x + '\\b').test(t); })[0];
+    M.settings.ttsVoice = v; M.settings.ttsOn = true; M.save();
+    return M.say('Hi, I\'m ' + v + '. This is my voice now.', { plain: true });
+  });
   add(['(change|switch|next|different|new) voice', 'talk differently'], function () {
+    if (M.naturalVoiceReady()) {
+      var k = M.ttsVoices.indexOf(M.settings.ttsVoice || 'marin'), nv = M.ttsVoices[(k + 1) % M.ttsVoices.length];
+      M.settings.ttsVoice = nv; M.save();
+      return M.say('This is my new voice. I\'m ' + nv + '. Say "change voice" again for the next one.', { plain: true });
+    }
     if (!M.voices.length) return M.say('No other voices are available.');
     var i = M.voices.findIndex(function (v) { return v.voiceURI === M.settings.voiceURI; });
     var v = M.voices[(i + 1) % M.voices.length]; M.settings.voiceURI = v.voiceURI; M.save();

@@ -17,6 +17,8 @@
     mirrorMode: false,
     ledPreview: true,
     voiceURI: '',
+    ttsOn: true,               // the natural OpenAI voice (needs the OpenAI key)
+    ttsVoice: 'marin',
     wake: true,
     gestures: false,
     pairing: randomCode(),

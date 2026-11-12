@@ -21,7 +21,13 @@
       next: '#dlgNext', choices: '#dlgChoices .choice' },
     { id: 'distant-light', title: 'Distant Light', alias: ['distant light', 'distant', 'the distant light', 'harukana hikari'],
       url: 'games/distant-light/index.html', cover: 'games/distant-light/assets/bg/rooftop.webp',
-      next: '#text', choices: '#choices .choice:not(.locked)' }
+      next: '#text', choices: '#choices .choice:not(.locked)' },
+    { id: 'velvet-vow', title: 'Velvet//Vow', alias: ['velvet vow', 'velvet slash vow', 'velvet slash slash vow', 'nova', 'aurelia'],
+      url: 'games/velvet-vow/index.html', cover: 'games/velvet-vow/cover.jpg',
+      next: '.zz-none', choices: '.zz-none' },
+    { id: 'feedback', title: 'FEED//BACK', alias: ['feedback', 'feed back', 'feed slash back', 'feed slash slash back'],
+      url: 'games/feedback/index.html', cover: 'games/feedback/cover.jpg',
+      next: '.zz-none', choices: '.zz-none' }
   ];
   M.games = GAMES;
   var sel = 0, current = null, numbered = [], badgeTimer = null;
@@ -43,10 +49,13 @@
   M.gameMove = function (dir) { sel = (sel + dir + GAMES.length) % GAMES.length; M.renderGames(); };
   function find(words) {
     words = String(words || '').replace(/^(the|my|a) /, '').replace(/ game$/, '').trim();
+    var best = -1, bestLen = 0;   // the longest matching name wins, so "velvet vow" isn't mistaken for Crimson Velvet
     for (var i = 0; i < GAMES.length; i++) for (var j = 0; j < GAMES[i].alias.length; j++) {
-      var a = GAMES[i].alias[j]; if (words === a || words.indexOf(a) === 0) return i;
+      var a = GAMES[i].alias[j];
+      if (words === a) return i;
+      if (words.indexOf(a) === 0 && a.length > bestLen) { best = i; bestLen = a.length; }
     }
-    return -1;
+    return best;
   }
 
   /* ---------- Opening and closing ---------- */
